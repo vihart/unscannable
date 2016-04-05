@@ -129,11 +129,14 @@
 			scene.add( blueYellowFloor );
 		}, onProgress, onError );
 
-		// objmtlLoader.load( 'objs/apricot2.obj', 'objs/apricot2.mtl', function ( object ) {
-		// 	object.position.z = -10;
-		// 	apricot = object;
-		// 	scene.add( apricot );
-		// }, onProgress, onError );
+		objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
+			object.position.z = -2;
+			object.position.x = -1;
+			object.position.y = 1;
+			object.scale.set(0.1,0.1,0.1);
+			apricot = object;
+			scene.add( apricot );
+		}, onProgress, onError );
 
 
 		// /*
