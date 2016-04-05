@@ -116,7 +116,8 @@
 		};
 
 		var blueYellowFloor = new THREE.Object3D();
-		// var apricot = new THREE.Object3D();
+		var apricot = new THREE.Object3D();
+		var fish = new THREE.Object3D();
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
@@ -138,6 +139,14 @@
 			scene.add( apricot );
 		}, onProgress, onError );
 
+		objmtlLoader.load( 'objs/fish/fish.obj', 'objs/fish/fish.mtl', function ( object ) {
+			object.position.z = -2;
+			object.position.x = -2;
+			object.position.y = 1;
+			object.scale.set(0.1,0.1,0.1);
+			fish = object;
+			scene.add( fish );
+		}, onProgress, onError );
 
 		// /*
 		// Create Cursor
