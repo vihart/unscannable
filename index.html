@@ -12,7 +12,7 @@
 	<body>
 	</body>
 
-	
+
 	<script src="js/three.min.js"></script>
 	<script src="js/VRControls.js"></script>
 	<script src="js/VREffect.js"></script>
@@ -72,7 +72,7 @@
 		Floor
 		*/
 		var floorImage = new THREE.ImageUtils.loadTexture( "images/stone.jpg" );
-		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping; 
+		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
 		var floorGeometry = new THREE.PlaneBufferGeometry( 150, 150, 10 );
 		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
@@ -87,8 +87,8 @@
 		var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
 		var grassGeometry = new THREE.PlaneBufferGeometry(2.5,2.5);
 		var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
-		
-		
+
+
 		var nTufts = 5000;
 		var grass = new Array(nTufts);
 		for(var i = 0; i < nTufts; i++){
@@ -116,7 +116,7 @@
 		var blueYellowFloor = new THREE.Object3D();
 		// var apricot = new THREE.Object3D();
 		var objmtlLoader = new THREE.OBJMTLLoader();
-			
+
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
 			object.position.z = 10;
 			object.position.y = 10;
@@ -131,7 +131,7 @@
 		// 	scene.add( apricot );
 		// }, onProgress, onError );
 
-		
+
 		// /*
 		// Create Cursor
 		// */
@@ -153,7 +153,7 @@
 
    //      		if ( cursor.objectMouseOver !== null && prevSelected !== cursor.objectMouseOver) {
    //      			cursor.objectMouseOver.material.color.set(0xffffff);
-   //      		} 
+   //      		}
 
    //      		if (prevSelected !== null && prevSelected !== cursor.objectMouseOver) {
    //      			prevSelected.material.color.set(0x636363);
@@ -174,7 +174,7 @@
 
 			//Walk
 			blueYellowFloor.position.x = (Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
-			blueYellowFloor.position.z = (Math.sin(t*.3) * 35) + (Math.sin(t)*.4); 
+			blueYellowFloor.position.z = (Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
 			// blueYellowFloor.lookAt(apricot.position);
 
 
@@ -200,9 +200,9 @@
 		Kick off animation loop
 		*/
 		animate();
-		
-	
-		
+
+
+
 		/*
 		Listen for double click event to enter full-screen VR mode
 		*/
@@ -213,15 +213,18 @@
 		/*
 		Listen for keyboard event and zero positional sensor on appropriate keypress.
 		*/
+		var vrMode = false;
 		function onkey(event) {
 	    event.preventDefault();
              if (event.keyCode == 90) { // z
 	    	controls.zeroSensor(); //zero rotation
-	    } else if (event.keyCode == 70 || event.keyCode == 13) { //f or enter
+	    } else if (event.keyCode == 70) { //f
 	    	effect.setFullScreen(true) //fullscreen
-	    } else if (event.keyCode == 32  ) {//space
+	  	} else if (event.keyCode == 86 || event.keyCode == 13 || event.keyCode == 32 ) { // v or 'enter' or 'space' for VR mode
+		    vrMode = !vrMode;
+		    effect.setVRMode(vrMode);
+			}
 
-	  	}
 	  };
 
 	  window.addEventListener("keydown", onkey, true);
