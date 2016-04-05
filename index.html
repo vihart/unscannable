@@ -120,8 +120,8 @@
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.z = 10*c;
-			object.position.y = 10*c;
+			object.position.z = 0;
+			object.position.y = 1;
 			object.rotation.x = 140 * Math.PI/180;
 			blueYellowFloor = object;
 			scene.add( blueYellowFloor );
@@ -172,11 +172,11 @@
 			t += .03;
 			//Bounce
 			// apricot.position.y = (Math.sin(t))/2;
-			blueYellowFloor.position.y = ((Math.sin(4 * t) * 1.5)) + 10;
+			// blueYellowFloor.position.y = ((Math.sin(4 * t) * 1.5)) + 10;
 
-			//Walk
-			blueYellowFloor.position.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
-			blueYellowFloor.position.z = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
+			// //Walk
+			// blueYellowFloor.position.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
+			// blueYellowFloor.position.z = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
 			// blueYellowFloor.lookAt(apricot.position);
 
 
