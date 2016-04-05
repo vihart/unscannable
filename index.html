@@ -62,11 +62,11 @@
 		scene.add( light );
 
 		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
-		directionalLight.position.set( 0, 10*c, 0 );
+		directionalLight.position.set( 0, 2, 0 );
 		scene.add( directionalLight );
 
-		var light2 = new THREE.PointLight( 0xffffff, 2, 100 );
-		light.position.set( 0, 5*c, 0 );
+		var light2 = new THREE.PointLight( 0xffffff, 20, 100 );
+		light.position.set( 0, 2, 0 );
 		scene.add( light2 );
 
 
@@ -86,21 +86,21 @@
 		/*
 		Grass
 		*/
-		var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
-		var grassGeometry = new THREE.PlaneBufferGeometry(2.5*c,2.5*c);
-		var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
+		// var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
+		// var grassGeometry = new THREE.PlaneBufferGeometry(2.5*c,2.5*c);
+		// var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
 
 
-		var nTufts = 5000;
-		var grass = new Array(nTufts);
-		for(var i = 0; i < nTufts; i++){
-			grass[i] = new THREE.Mesh( grassGeometry, grassMaterial );
-			grass[i].position.x	= -100+Math.floor(Math.random()*(201))*c;
-			grass[i].position.z	= -100+Math.floor(Math.random()*(201))*c;
-			grass[i].position.y = -4.5*c;
-			grass[i].rotation.y = (360+Math.floor(Math.random()*(361))) * Math.PI/180;
-			scene.add(grass[i]);
-		}
+		// var nTufts = 5000;
+		// var grass = new Array(nTufts);
+		// for(var i = 0; i < nTufts; i++){
+		// 	grass[i] = new THREE.Mesh( grassGeometry, grassMaterial );
+		// 	grass[i].position.x	= -100+Math.floor(Math.random()*(201))*c;
+		// 	grass[i].position.z	= -100+Math.floor(Math.random()*(201))*c;
+		// 	grass[i].position.y = -4.5*c;
+		// 	grass[i].rotation.y = (360+Math.floor(Math.random()*(361))) * Math.PI/180;
+		// 	scene.add(grass[i]);
+		// }
 
 		/*
 		Charaters
@@ -120,9 +120,11 @@
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.z = 0;
+			object.position.z = -1;
+			object.position.x = -1;
 			object.position.y = 1;
 			object.rotation.x = 140 * Math.PI/180;
+			object.scale.set(0.1,0.1,0.1);
 			blueYellowFloor = object;
 			scene.add( blueYellowFloor );
 		}, onProgress, onError );
