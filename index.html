@@ -25,6 +25,8 @@
 	<script src="js/PhoneVR.js"></script>
 
 	<script>
+
+		var c = 1/15; //scae factor
 		/*
 		Setup three.js WebGL renderer
 		*/
@@ -60,11 +62,11 @@
 		scene.add( light );
 
 		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
-		directionalLight.position.set( 0, 10, 0 );
+		directionalLight.position.set( 0, 10*c, 0 );
 		scene.add( directionalLight );
 
 		var light2 = new THREE.PointLight( 0xffffff, 2, 100 );
-		light.position.set( 0, 5, 0 );
+		light.position.set( 0, 5*c, 0 );
 		scene.add( light2 );
 
 
@@ -74,18 +76,18 @@
 		var floorImage = new THREE.ImageUtils.loadTexture( "images/stone.jpg" );
 		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
-		var floorGeometry = new THREE.PlaneBufferGeometry( 150, 150, 10 );
+		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
 		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
 		var floor = new THREE.Mesh( floorGeometry, floorMaterial );
 		floor.rotation.x = 90 * Math.PI/180;
-		floor.position.y = -5;
+		floor.position.y = 0;
 		scene.add( floor );
 
 		/*
 		Grass
 		*/
 		var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
-		var grassGeometry = new THREE.PlaneBufferGeometry(2.5,2.5);
+		var grassGeometry = new THREE.PlaneBufferGeometry(2.5*c,2.5*c);
 		var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
 
 
@@ -93,9 +95,9 @@
 		var grass = new Array(nTufts);
 		for(var i = 0; i < nTufts; i++){
 			grass[i] = new THREE.Mesh( grassGeometry, grassMaterial );
-			grass[i].position.x	= -100+Math.floor(Math.random()*(201));
-			grass[i].position.z	= -100+Math.floor(Math.random()*(201));
-			grass[i].position.y = -4.5;
+			grass[i].position.x	= -100+Math.floor(Math.random()*(201))*c;
+			grass[i].position.z	= -100+Math.floor(Math.random()*(201))*c;
+			grass[i].position.y = -4.5*c;
 			grass[i].rotation.y = (360+Math.floor(Math.random()*(361))) * Math.PI/180;
 			scene.add(grass[i]);
 		}
@@ -118,8 +120,8 @@
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.z = 10;
-			object.position.y = 10;
+			object.position.z = 10*c;
+			object.position.y = 10*c;
 			object.rotation.x = 140 * Math.PI/180;
 			blueYellowFloor = object;
 			scene.add( blueYellowFloor );
@@ -173,8 +175,8 @@
 			blueYellowFloor.position.y = ((Math.sin(4 * t) * 1.5)) + 10;
 
 			//Walk
-			blueYellowFloor.position.x = (Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
-			blueYellowFloor.position.z = (Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
+			blueYellowFloor.position.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
+			blueYellowFloor.position.z = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
 			// blueYellowFloor.lookAt(apricot.position);
 
 
