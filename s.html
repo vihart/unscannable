@@ -94,13 +94,14 @@
 		scene.add( floor );
 
 
+
 		//office
 		var office = new THREE.Object3D();
 		var officeMaterial = new THREE.MeshLambertMaterial();
 	    // load the mesh
-	    var officeManager = new THREE.LoadingManager();
-	    var officeLoader = new THREE.OBJLoader(officeManager);
-		officeLoader.load( 'objs/office.obj', function ( object ) {
+	    var manager = new THREE.LoadingManager();
+	    var loader = new THREE.OBJLoader(manager);
+		loader.load( 'objs/office.obj', function ( object ) {
 		object.scale.set(.05,.05,.05);
 		object.position.set(0,-4,-50);		
 		object.traverse(function (child) {
@@ -151,6 +152,7 @@
 		var biggerPink = new THREE.Object3D();
 		var littlerPink = new THREE.Object3D();
 		var blueBridges = new THREE.Object3D();
+
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
