@@ -196,7 +196,9 @@
 		var prevSelected = null;
 		function animate() {
 
-			blueYellowFloor.rotation.y += Math.sin(t/100);
+			blueYellowFloor.rotation.y = Math.sin(t/100);
+
+			biggerpink.rotation.y = Math.sin(t/130)/3;
 
 			// if (cursor.enabled) {
    //      		cursor.updatePosition();
