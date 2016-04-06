@@ -74,9 +74,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 		}
 
 		if (!navigator.getVRDisplays && !navigator.mozGetVRDevices && !navigator.getVRDevices) {
-			if ( done ) {
-				done("Your browser is not VR Ready");
-			}
 			return;
 		}
 		if (navigator.getVRDisplays) {
@@ -97,12 +94,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 					break; // We keep the first we encounter
 				}
 			}
-			if ( done ) {
-				if ( !vrInput ) {
-				 error = 'HMD not available';
-				}
-				done( error );
-			}
 		}
 
 		function gotVRDevices( devices ) {
@@ -114,12 +105,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 					self._vrInput = vrInput;
 					break; // We keep the first we encounter
 				}
-			}
-			if ( done ) {
-				if ( !vrInput ) {
-				 error = 'HMD not available';
-				}
-				done( error );
 			}
 		}
 	};
