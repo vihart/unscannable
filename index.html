@@ -66,14 +66,23 @@
 		scene.add( directionalLight );
 
 		var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
-		light2.intensity.set(1);
+		light2.intensity = 1;
 		scene.add( light2 );
 
 
 		/*
+		Skybox
+		*/
+		var skyTexture = new THREE.ImageUtils.loadTexture( "images/sky.jpg" );
+		var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
+		var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
+		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
+		scene.add( skybox );
+
+		/*
 		Floor
 		*/
-		var floorImage = new THREE.ImageUtils.loadTexture( "images/stone.jpg" );
+		var floorImage = new THREE.ImageUtils.loadTexture( "images/floor.jpg" );
 		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
 		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
@@ -146,6 +155,33 @@
 			object.scale.set(0.001,0.001,0.001)
 			fish = object;
 			scene.add( fish );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
+			object.position.z = -1;
+			object.position.x = 0;
+			object.position.y = 1;
+			object.scale.set(0.001,0.001,0.001)
+			blueBridges = object;
+			scene.add( blueBridges );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/littlerpink/littlierpink.obj', 'objs/littlerpink/littlier_pink.mtl', function ( object ) {
+			object.position.z = -1;
+			object.position.x = -1;
+			object.position.y = 1;
+			object.scale.set(0.001,0.001,0.001)
+			fish = object;
+			scene.add( fish );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
+			object.position.z = -2;
+			object.position.x = -2;
+			object.position.y = 1;
+			object.scale.set(0.001,0.001,0.001)
+			biigerPink = object;
+			scene.add( biggerPink );
 		}, onProgress, onError );
 
 		// /*
