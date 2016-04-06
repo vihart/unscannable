@@ -1,49 +1,8 @@
-newmtl blueandyellowfloor:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd blueandyellowfloor.png
-Ni 1.00
-newmtl blueandyellowfloor1:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd blueandyellowfloor.png
-Ni 1.00
-newmtl model3:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd model.png
-Ni 1.00
-newmtl model4:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd model.png
-Ni 1.00
-newmtl model6:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd model.png
-Ni 1.00
-newmtl model8:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd model.png
-Ni 1.00
-newmtl model10:material_0
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.20 0.20 0.20
-Tf 1.00 1.00 1.00
-map_Kd model.png
-Ni 1.00
+newmtl material_0
+Ka 0.200000 0.200000 0.200000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Tr 1.000000
+illum 2
+Ns 0.000000
+map_Kd blueyellowfloor.png

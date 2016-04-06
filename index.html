@@ -62,10 +62,10 @@
 		scene.add( light );
 
 		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
-		directionalLight.position.set( 0, 2, 0 );
-		scene.add( directionalLight );
+		// directionalLight.position.set( 0, 2, 0 );
+		// scene.add( directionalLight );
 
-		var light2 = new THREE.PointLight( 0xffffff, 20, 100 );
+		var light2 = new THREE.PointLight( 0xffffff, 10, 100 );
 		light.position.set( 0, 2, 0 );
 		scene.add( light2 );
 
@@ -140,10 +140,10 @@
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/fish/fish.obj', 'objs/fish/fish.mtl', function ( object ) {
-			object.position.z = -2;
-			object.position.x = -2;
+			object.position.z = 0;
+			object.position.x = 0;
 			object.position.y = 1;
-			object.scale.set(0.1,0.1,0.1);
+			object.scale.set(0.001,0.001,0.001)
 			fish = object;
 			scene.add( fish );
 		}, onProgress, onError );
