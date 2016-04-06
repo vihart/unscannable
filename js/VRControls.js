@@ -270,7 +270,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 		} else if (this.phoneVR.rotationQuat()) {
 			orientation = this.phoneVR.rotationQuat();
 			orientation = [orientation.x, orientation.y, orientation.z, orientation.w];
-			position = [0,0,0];
+			position = [0,1.5,-1];
 		} else {
 			return null;
 		}
