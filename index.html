@@ -192,6 +192,8 @@
 	 //    	cursor.enable();
 	 //    });
 
+		var looky = new THREE.Vector2;
+
 		/*
 		Request animation frame loop function
 		*/
@@ -199,9 +201,11 @@
 		var prevSelected = null;
 		function animate() {
 
-			blueYellowFloor.rotation.y = Math.sin(t/100);
-
-			biggerPink.rotation.y = Math.sin(t/130)/3;
+			blueYellowFloor.rotation.y = Math.sin(t/20);
+			biggerPink.rotation.y = Math.sin(t/32)*0.3;
+			littlerPink.rotation.y = Math.sin(t/46);
+			fish.rotation.y = Math.sin(t/10)*2;
+			bluebridges.rotation.y = Math.sin(t/18)*0.8;
 
 			// if (cursor.enabled) {
    //      		cursor.updatePosition();
@@ -224,13 +228,13 @@
 
 			t += .03;
 			//Bounce
-			// apricot.position.y = (Math.sin(t))/2;
-			// blueYellowFloor.position.y = ((Math.sin(4 * t) * 1.5)) + 10;
+			apricot.position.y = (Math.sin(t))/2;
+			looky.position.y = ((Math.sin(4 * t) * 1.5)) + 10;
+			apricot.lookAt(looky);
 
 			// //Walk
-			// blueYellowFloor.position.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
-			// blueYellowFloor.position.z = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
-			// blueYellowFloor.lookAt(apricot.position);
+			looky.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
+			looky.y = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
 
 
 			/*
