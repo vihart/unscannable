@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Unscannable</title>
+		<!--
+		Attribution
+		eleVR webvr boilerplate: https://github.com/hawksley
+		-->
+	</head>
+
+	<body>
+	</body>
+
+
+	<script src="js/three.min.js"></script>
+	<script src="js/VRControls.js"></script>
+	<script src="js/VREffect.js"></script>
+	<script src="lib/gl-matrix.js"></script>
+	<script src="js/VRCursor.js"></script>
+	<script src="loaders/OBJloader.js"></script>
+	<script src="loaders/MTLLoader.js"></script>
+	<script src="loaders/OBJMTLLoader.js"></script>
+	<!-- // <script src="lib/tween.js"></script> -->
+	<script src="js/PhoneVR.js"></script>
+
+	<script>
+
+		var c = 1/15; //scae factor
+		/*
+		Setup three.js WebGL renderer
+		*/
+		var renderer = new THREE.WebGLRenderer( { antialias: true } );
+		/*
+		Append the canvas element created by the renderer to document body element.
+		*/
+		document.body.appendChild( renderer.domElement );
+		/*
+		Create a three.js scene
+		*/
+		var scene = new THREE.Scene();
+		/*
+		Create a three.js camera
+		*/
+		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.001, 10000 );
+
+		/*
+		Apply VR headset positional data to camera.
+		*/
+		var controls = new THREE.VRControls( camera, undefined, 4 );
+
+		/*
+		Apply VR stereo rendering to renderer
+		*/
+		var effect = new THREE.VREffect( renderer );
+		effect.setSize( window.innerWidth, window.innerHeight );
+
+		/*
+		Light
+		*/
+		var light = new THREE.AmbientLight( 0x404040 );
+		scene.add( light );
+
+		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
+		directionalLight.position.set( 0, 2, 0 );
+		scene.add( directionalLight );
+
+		var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
+		light2.intensity = 1;
+		scene.add( light2 );
+
+
+		/*
+		Skybox
+		*/
+		var skyTexture = new THREE.ImageUtils.loadTexture( "images/sky.jpg" );
+		var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
+		var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
+		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
+		scene.add( skybox );
+
+		/*
+		Floor
+		*/
+		var floorImage = new THREE.ImageUtils.loadTexture( "images/floor.jpg" );
+		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
+		floorImage.repeat.set( 10, 10 );
+		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
+		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
+		var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+		floor.rotation.x = 90 * Math.PI/180;
+		floor.position.y = 0;
+		floor.scale.set(8,8,8);
+		scene.add( floor );
+
+		/*
+		Grass
+		*/
+		// var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
+		// var grassGeometry = new THREE.PlaneBufferGeometry(2.5*c,2.5*c);
+		// var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
+
+
+		// var nTufts = 5000;
+		// var grass = new Array(nTufts);
+		// for(var i = 0; i < nTufts; i++){
+		// 	grass[i] = new THREE.Mesh( grassGeometry, grassMaterial );
+		// 	grass[i].position.x	= -100+Math.floor(Math.random()*(201))*c;
+		// 	grass[i].position.z	= -100+Math.floor(Math.random()*(201))*c;
+		// 	grass[i].position.y = -4.5*c;
+		// 	grass[i].rotation.y = (360+Math.floor(Math.random()*(361))) * Math.PI/180;
+		// 	scene.add(grass[i]);
+		// }
+
+		/*
+		Charaters
+		*/
+		var onProgress = function ( xhr ) {
+			if ( xhr.lengthComputable ) {
+				var percentComplete = xhr.loaded / xhr.total * 100;
+				console.log( Math.round(percentComplete, 2) + '% downloaded' );
+			}
+		};
+
+		var onError = function ( xhr ) {
+		};
+
+		var blueYellowFloor = new THREE.Object3D();
+		var apricot = new THREE.Object3D();
+		var fish = new THREE.Object3D();
+		var biggerPink = new THREE.Object3D();
+		var littlerPink = new THREE.Object3D();
+		var blueBridges = new THREE.Object3D();
+		var objmtlLoader = new THREE.OBJMTLLoader();
+		var objmtlLoader2 = new THREE.OBJMTLLoader();
+		var objmtlLoader3 = new THREE.OBJMTLLoader();
+		var objmtlLoader4 = new THREE.OBJMTLLoader();
+		var objmtlLoader5 = new THREE.OBJMTLLoader();
+		var objmtlLoader6 = new THREE.OBJMTLLoader();
+
+		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
+			object.position.z = -1;
+			object.position.x = -1;
+			object.position.y = 1;
+			object.rotation.x = 140 * Math.PI/180;
+			object.scale.set(0.001,0.001,0.001);
+			blueYellowFloor = object;
+			scene.add( blueYellowFloor );
+		}, onProgress, onError );
+
+		objmtlLoader2.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
+			object.position.z = -2;
+			object.position.x = -1;
+			object.position.y = 1;
+			object.scale.set(0.1,0.1,0.1);
+			apricot = object;
+			scene.add( apricot );
+		}, onProgress, onError );
+
+		objmtlLoader3.load( 'objs/fish/fish.obj', 'objs/fish/fish.mtl', function ( object ) {
+			object.position.set(0.6, 1.5, -1.8);
+			object.scale.set(0.002,0.002,0.002)
+			fish = object;
+			scene.add( fish );
+		}, onProgress, onError );
+
+		objmtlLoader4.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
+			object.position.z = -1;
+			object.position.x = 0;
+			object.position.y = 1;
+			object.scale.set(0.001,0.001,0.001)
+			blueBridges = object;
+			scene.add( blueBridges );
+		}, onProgress, onError );
+
+		objmtlLoader5.load( 'objs/littlerpink/littlierpink.obj', 'objs/littlerpink/littlier_pink.mtl', function ( object ) {
+			object.position.set(1,1,-1);
+			object.scale.set(0.001,0.001,0.001)
+			littlerPink = object;
+			scene.add( littlerPink );
+		}, onProgress, onError );
+
+		objmtlLoader6.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
+			object.position.set(-0.5,2.3,-0.5);
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );
+
+		// /*
+		// Create Cursor
+		// */
+		// var cursor = new VRCursor();
+		// cursor.ready.then(function() {
+	 //    	scene.add(cursor.layout);
+	 //    	cursor.init(renderer.domElement, camera, scene, selectable);
+	 //    	cursor.enable();
+	 //    });
+
+
+		//bird
+		var bird = [];
+		var birdseed = [];
+		var birdNumber = 15;
+		var flock = new THREE.Object3D();
+
+		for (var i = 0; i < birdNumber; i++){
+		  bird[i] = new THREE.Mesh(
+		      new THREE.OctahedronGeometry(1),
+		      new THREE.MeshLambertMaterial()
+		      );
+
+		  bird[i].geometry.vertices[0].set(2,0,0);
+		  bird[i].geometry.vertices[1].set(-2,0,0);
+		  bird[i].geometry.vertices[2].set(0,0.02,0.5);
+		  bird[i].geometry.vertices[3].set(0,-0.02,-0.5);
+		  bird[i].geometry.vertices[4].set(0,-0.02,0.5);
+		  bird[i].geometry.vertices[5].set(0,0.02,-0.5);
+
+		  birdseed[i] = Math.random();
+		  var birdscale = 2*Math.random()*Math.random() + .5;
+		  bird[i].scale.set(birdscale,birdscale,birdscale);
+		  var birdBrightness = 0.25 + (3*Math.random())/4;
+		  bird[i].material.color.setRGB(birdBrightness, birdBrightness, birdBrightness + Math.random()/2);
+
+		  flock.add(bird[i]);
+		};
+		var everything = new THREE.Object3D;
+		everything.add(flock);
+		everything.scale.set(1/15, 1/15, 1/15);
+		flock.scale.set(2,2,2);
+		scene.add(everything);
+
+		/*
+		Request animation frame loop function
+		*/
+		var t = 1;
+		var tb = 1;
+		var prevSelected = null;
+		function animate() {
+
+			blueYellowFloor.rotation.y = Math.sin(t/15);
+			biggerPink.rotation.y = Math.sin(t/12)*0.3;
+			littlerPink.rotation.y = Math.sin(t/26);
+			fish.rotation.y = Math.sin(t/10)*2;
+			blueBridges.rotation.y = Math.sin(t/18)*0.8;
+
+			// if (cursor.enabled) {
+   //      		cursor.updatePosition();
+
+   //      		if ( cursor.objectMouseOver !== null && prevSelected !== cursor.objectMouseOver) {
+   //      			cursor.objectMouseOver.material.color.set(0xffffff);
+   //      		}
+
+   //      		if (prevSelected !== null && prevSelected !== cursor.objectMouseOver) {
+   //      			prevSelected.material.color.set(0x636363);
+   //      		}
+
+   //      		prevSelected = cursor.objectMouseOver;
+   //      	}
+
+
+        	/*
+			Character animation
+			*/
+
+			t += .03;
+			tb += 1; //time for birds
+			//Bounce
+			apricot.position.y = (Math.sin(t))/3 + 1;
+
+			// //Walk
+			apricot.position.x = (Math.sin(t*.05)*-25)/5 + (Math.sin(t/5)*.2)/5 + (Math.sin(t/5)*.3);
+			apricot.position.z = (Math.cos(t*.05) * 35)/5 + (Math.cos(t/5)*.4)/5;
+
+			// apricot.lookAt(  
+			// 		((Math.sin((t+1)*.05)*-25)/5 + (Math.sin((t+1)/5)*.2)/5 + (Math.sin((t+1)/5)*.3)),
+			// 		((Math.cos((t+1)*.05) * 35)/5 + (Math.cos((t+1)/5)*.4)/5)
+			// 	);
+			apricot.rotation.y = Math.sin(t/5)*0.3;
+
+
+			  //bird flapping
+			  for (var i = 0; i < birdNumber; i++){
+			    var flappy = Math.sin(tb/(7-(2*birdseed[i])));
+			    var flappy2 = Math.sin(tb/(8-(3*birdseed[i])));
+			    bird[i].geometry.vertices[0].set(2,flappy+flappy2,0);
+			    bird[i].geometry.vertices[1].set(-2,flappy+flappy2,0);
+			    bird[i].geometry.verticesNeedUpdate = true;
+			    bird[i].lookAt(camera.position);
+			    bird[i].position.x = 57*birdseed[i] + 20 * Math.sin((tb+200*birdseed[i])/57) + 5*Math.sin(tb*birdseed[i]/51) + 8*Math.sin(tb*birdseed[i]/67) + 10*birdseed[i]*Math.sin(tb*birdseed[i]/79);
+			    bird[i].position.z = 20 * Math.cos((tb+200*birdseed[i])/57) + 7*Math.sin(tb*birdseed[i]/51) + 6*Math.sin(tb*birdseed[i]/67) + 11*birdseed[i]*Math.cos(tb*birdseed[i]/73);
+			    bird[i].position.y = 25 + 5*Math.sin((tb+333*birdseed[i])/(39 - 20000*(birdseed[i]/2432)));
+			  };
+
+			  flock.position.x = 80*Math.sin(tb/800) + 15*Math.sin(tb/300);
+			  flock.position.z = 80*Math.cos(tb/800) + 32*Math.cos(tb/467);
+			  flock.position.y = 1;
+
+			/*
+			Update VR headset position and apply to camera.
+			*/
+			controls.update();
+
+
+			/*
+			Render the scene through the VREffect.
+			*/
+			// scene.simulate();
+			effect.render( scene, camera );
+			requestAnimationFrame( animate );
+
+		}
+
+		/*
+		Kick off animation loop
+		*/
+		animate();
+
+
+
+		/*
+		Listen for double click event to enter full-screen VR mode
+		*/
+		document.body.addEventListener( 'dblclick', function() {
+			effect.setFullScreen( true );
+		});
+
+		/*
+		Listen for keyboard event and zero positional sensor on appropriate keypress.
+		*/
+		var vrMode = false;
+		function onkey(event) {
+	    event.preventDefault();
+             if (event.keyCode == 90) { // z
+	    	controls.zeroSensor(); //zero rotation
+	    } else if (event.keyCode == 70) { //f
+	    	effect.setFullScreen(true) //fullscreen
+	  	} else if (event.keyCode == 86 || event.keyCode == 13 || event.keyCode == 32 ) { // v or 'enter' or 'space' for VR mode
+		    vrMode = !vrMode;
+		    effect.setVRMode(vrMode);
+			}
+
+	  };
+
+	  window.addEventListener("keydown", onkey, true);
+
+
+		/*
+		Handle window resizes
+		*/
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			effect.setSize( window.innerWidth, window.innerHeight );
+		}
+
+		window.addEventListener( 'resize', onWindowResize, false );
+
+	</script>
+</html>
