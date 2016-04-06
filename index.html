@@ -228,12 +228,12 @@
 
 			t += .03;
 			//Bounce
-			apricot.position.y = (Math.sin(t))/2;
+			apricot.position.y = (Math.sin(t))/3 + 1;
 			// apricot.lookAt(looky);
 
 			// //Walk
-			apricot.position.x = (Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
-			apricot.position.z = (Math.cos(t*.2) * 35) + (Math.cos(t)*.4);
+			apricot.position.x = (Math.sin(t*.05)*-25)/5 + (Math.sin(t/5)*.2)/5 + (Math.sin(t/5)*.3);
+			apricot.position.z = (Math.cos(t*.05) * 35)/5 + (Math.cos(t/5)*.4)/5;
 
 			// looky.x = c*(Math.sin(t*.2)*-25) + (Math.sin(t)*.2) + (Math.sin(t)*.3);
 			// looky.y = c*(Math.sin(t*.3) * 35) + (Math.sin(t)*.4);
