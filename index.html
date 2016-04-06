@@ -223,6 +223,7 @@
 		var everything = new THREE.Object3D;
 		everything.add(flock);
 		everything.scale.set(1/15, 1/15, 1/15);
+		flock.scale.set(2,2,2);
 		scene.add(everything);
 
 		/*
@@ -287,8 +288,9 @@
 			    bird[i].position.y = 25 + 5*Math.sin((tb+333*birdseed[i])/(39 - 20000*(birdseed[i]/2432)));
 			  };
 
-			  flock.position.x = 80*Math.sin(tb/800) + 10*Math.sin(tb/300);
-			  flock.position.z = 80*Math.cos(tb/800) + 12*Math.cos(tb/467);
+			  flock.position.x = 80*Math.sin(tb/800) + 15*Math.sin(tb/300);
+			  flock.position.z = 80*Math.cos(tb/800) + 32*Math.cos(tb/467);
+			  flock.position.y = 1;
 
 			/*
 			Update VR headset position and apply to camera.
