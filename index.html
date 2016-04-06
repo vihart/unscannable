@@ -134,7 +134,7 @@
 			object.position.x = -1;
 			object.position.y = 1;
 			object.rotation.x = 140 * Math.PI/180;
-			object.scale.set(0.1,0.1,0.1);
+			object.scale.set(0.001,0.001,0.001);
 			blueYellowFloor = object;
 			scene.add( blueYellowFloor );
 		}, onProgress, onError );
@@ -171,8 +171,8 @@
 			object.position.x = -1;
 			object.position.y = 1;
 			object.scale.set(0.001,0.001,0.001)
-			fish = object;
-			scene.add( fish );
+			littlerPink = object;
+			scene.add( littlerPink );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
@@ -180,7 +180,7 @@
 			object.position.x = -2;
 			object.position.y = 1;
 			object.scale.set(0.001,0.001,0.001)
-			biigerPink = object;
+			biggerPink = object;
 			scene.add( biggerPink );
 		}, onProgress, onError );
 
