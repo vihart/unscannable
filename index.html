@@ -6,6 +6,7 @@
 		<!--
 		Attribution
 		eleVR webvr boilerplate: https://github.com/hawksley
+		Scanned sculptures "Unscannables": Emily Eifler
 		-->
 	</head>
 
@@ -225,6 +226,9 @@
 		everything.scale.set(1/15, 1/15, 1/15);
 		flock.scale.set(2,2,2);
 		scene.add(everything);
+
+		//camera position default for nonVR browsers:
+		camera.position.set(0, 1.5, -1);
 
 		/*
 		Request animation frame loop function
