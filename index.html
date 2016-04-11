@@ -137,6 +137,7 @@
 		var hourglassfigure = new THREE.Object3D();
 		var halfopen = new THREE.Object3D();
 		var goldfiliment = new THREE.Object3D();
+		var bigred = new THREE.Object3D();
 
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
@@ -228,8 +229,8 @@
 		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
 			object.position.set(0,1.6,-1);
 			object.scale.set(0.001,0.001,0.001);
-			tiny = object;
-			scene.add( tiny );
+			bigreg = object;
+			scene.add( bigred );
 		}, onProgress, onError );	
 		// /*
 		// Create Cursor
