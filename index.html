@@ -183,6 +183,41 @@
 			scene.add( biggerPink );
 		}, onProgress, onError );
 
+		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
+			object.position.set(-1,2,-0.5);
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
+			object.position.set(0.5,1.5,-0.5);
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
+			object.position.set(-0.5,1,-1.5);
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );
+
+		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
+			object.position.set(0,2.3,-2);
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );
+
+
+		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
+			object.position.set(1,0.5,0;
+			object.scale.set(2,2,2);
+			biggerPink = object;
+			scene.add( biggerPink );
+		}, onProgress, onError );		
 		// /*
 		// Create Cursor
 		// */
