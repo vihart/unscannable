@@ -132,6 +132,12 @@
 		var biggerPink = new THREE.Object3D();
 		var littlerPink = new THREE.Object3D();
 		var blueBridges = new THREE.Object3D();
+		var tiny = new THREE.Object3D();
+		var picklefrill = new THREE.Object3D();
+		var hourglassfigure = new THREE.Object3D();
+		var halfopen = new THREE.Object3D();
+		var goldfiliment = new THREE.Object3D();
+
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
@@ -186,37 +192,37 @@
 		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
 			object.position.set(-1,2,-0.5);
 			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
+			goldfiliment = object;
+			scene.add( goldfiliment );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
 			object.position.set(0.5,1.5,-0.5);
 			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
+			halfopen = object;
+			scene.add( halfopen );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
 			object.position.set(-0.5,1,-1.5);
 			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
+			hourglassfigure = object;
+			scene.add( hourglassfigure );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
 			object.position.set(0,2.3,-2);
 			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
+			picklefrill = object;
+			scene.add( picklefrill );
 		}, onProgress, onError );
 
 
 		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
 			object.position.set(1,0.5,0);
 			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
+			tiny = object;
+			scene.add( tiny );
 		}, onProgress, onError );		
 		// /*
 		// Create Cursor
