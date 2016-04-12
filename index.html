@@ -290,7 +290,7 @@
 		function animate() {
 			for (j in controls.controllers) {
 				if (!hands[j]) {
-					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
+					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.2), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
 				}
 				hands[j].position.set(controls.controllers[j].pose.position[0], controls.controllers[j].pose.position[1], controls.controllers[j].pose.position[2]);
