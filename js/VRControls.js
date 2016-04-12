@@ -57,14 +57,17 @@ THREE.VRControls = function ( camera, speed, done ) {
 		function scangamepads() {
 			var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
 			for (var i = 0; i < gamepads.length; i++) {
-				if (gamepads[i]) {
-					if (gamepads[i].index in self.controllers) {
-						self.controllers[gamepads[i].index] = gamepads[i];
+				var gamepad = gamepads[i];
+
+				// only take gamepads with pose for this demo
+				if (gamepad && gamepad.pose) { // for now only take vr controllers
+					if (gamepad.index in self.controllers) {
+						self.controllers[gamepad.index] = gamepad;
 					} else {
-						addgamepad(gamepads[i]);
+						addgamepad(gamepad);
 					}
-				}
-			}
+		    }
+	    }
 		}
 
 		window.addEventListener("gamepadconnected", connecthandler);
@@ -133,26 +136,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this.manualMoveRate = new Float32Array([0, 0, 0]);
 	this.updateTime = 0;
 
-	this.isGamepad = true;
-	this.isArrows = true;
-	this.isWASD = true;
-
-	// the Rift SDK returns the position in meters
-	// this scale factor allows the user to define how meters
-	// are converted to scene units.
 	this.scale = 1;
-
-	this.enableGamepad = function(isGamepad) {
-		this.isGamepad = isGamepad;
-	}
-
-	this.enableArrows = function(isArrows) {
-		this.isArrows = isArrows;
-	}
-
-	this.enableWASD = function(isWASD) {
-		this.isWASD = isWASD;
-	}
 
 	this.update = function() {
 		var camera = this._camera;
@@ -166,37 +150,31 @@ THREE.VRControls = function ( camera, speed, done ) {
 		/*
 		Get controller button info
 		*/
-		// if (this.isGamepad) {
-			var j;
 
-			for (j in this.controllers) {
-				var controller = this.controllers[j];
+		var j;
 
-				this.manualMoveRate[1] = -1 * Math.round(controller.axes[0]);
-				this.manualMoveRate[0] = Math.round(controller.axes[1]);
-				this.manualRotateRate[1] = -1 * Math.round(controller.axes[3]);
-				this.manualRotateRate[0] = -1 * Math.round(controller.axes[4]);
-			}
-		// }
+		for (j in this.controllers) {
+			var controller = this.controllers[j];
 
-		// if (this.isGamepad || this.isWASD) {
-		  var interval = (newTime - oldTime) * 0.001;
-		  var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
+			this.manualMoveRate[1] = -1 * Math.round(controller.axes[0]);
+			this.manualMoveRate[0] = Math.round(controller.axes[1]);
+			this.manualRotateRate[1] = -1 * Math.round(controller.axes[3]);
+			this.manualRotateRate[0] = -1 * Math.round(controller.axes[4]);
+		}
+
+		var interval = (newTime - oldTime) * 0.001;
+		var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
 		                               this.manualRotateRate[1] * interval,
 		                               this.manualRotateRate[2] * interval, 1.0);
-		  update.normalize();
-			manualRotation.multiplyQuaternions(manualRotation, update);
-		// }
+		update.normalize();
+		manualRotation.multiplyQuaternions(manualRotation, update);
 
-		// if (this.isGamepad || this.isArrows) {
-			var offset = new THREE.Vector3();
-			if (this.manualMoveRate[0] != 0 || this.manualMoveRate[1] != 0 || this.manualMoveRate[2] != 0){
-					offset = getFwdVector().multiplyScalar( interval * this.speed * this.manualMoveRate[0])
-							.add(getRightVector().multiplyScalar( interval * this.speed * this.manualMoveRate[1]))
-							.add(getUpVector().multiplyScalar( interval * this.speed * this.manualMoveRate[2]));
-			}
-
-		// }
+		var offset = new THREE.Vector3();
+		if (this.manualMoveRate[0] != 0 || this.manualMoveRate[1] != 0 || this.manualMoveRate[2] != 0){
+				offset = getFwdVector().multiplyScalar( interval * this.speed * this.manualMoveRate[0])
+						.add(getRightVector().multiplyScalar( interval * this.speed * this.manualMoveRate[1]))
+						.add(getUpVector().multiplyScalar( interval * this.speed * this.manualMoveRate[2]));
+		}
 
 		if ( camera ) {
 			if ( !vrState ) {
@@ -296,6 +274,33 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 		return vrState;
 	};
+
+	this.getGamepadState = function(gamepad) {
+		var orientation;
+		var position;
+		var state;
+
+		orientation	= gamepad.getPose().orientation;
+		position = gamepad.getPose().position;
+
+		state = {
+			hmd : {
+				rotation : [
+					orientation[0],
+					orientation[1],
+					orientation[2],
+					orientation[3]
+				],
+				position : [
+					position[0],
+					position[1],
+					position[2]
+				]
+			}
+		};
+
+		return state;
+	}
 
 	function getFwdVector() {
 		return new THREE.Vector3(0,0,1).applyQuaternion(camera.quaternion);

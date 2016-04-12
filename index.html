@@ -224,14 +224,14 @@
 			object.scale.set(0.001,0.001,0.001);
 			tiny = object;
 			scene.add( tiny );
-		}, onProgress, onError );		
+		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
 			object.position.set(0,1.6,-1);
 			object.scale.set(0.001,0.001,0.001);
 			bigred = object;
 			scene.add( bigred );
-		}, onProgress, onError );	
+		}, onProgress, onError );
 		// /*
 		// Create Cursor
 		// */
@@ -279,6 +279,8 @@
 		//camera position default for nonVR browsers:
 		camera.position.set(0, 1.5, -1);
 
+		var hands = {};
+
 		/*
 		Request animation frame loop function
 		*/
@@ -286,6 +288,15 @@
 		var tb = 1;
 		var prevSelected = null;
 		function animate() {
+			for (j in controls.controllers) {
+				if (!hands[j]) {
+					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
+					scene.add(hands[j])
+				}
+				var controller = controls.controllers[j];
+				var state = controls.getGamepadState(controller);
+				hands[j].position.set(state.position);
+			}
 
 			blueYellowFloor.rotation.y = Math.sin(t/15);
 			biggerPink.rotation.y = Math.sin(t/12)*0.3;
@@ -421,6 +432,13 @@
 
 		  window.screen.webkitLockOrientation('landscape-primary');
 		  window.screen.lockOrientation('landscape-primary');
+		}
+
+		window.addEventListener("gamepadconnected", connecthandler);
+		window.addEventListener("gamepaddisconnected", disconnecthandler);
+
+		function connecthandler(e) {
+			e.gamepad;
 		}
 
 	</script>
