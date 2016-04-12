@@ -214,7 +214,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 		return totalRotation;
 	};
 
-	this._defaultPosition = [0,1.5,-1]
+	this._defaultPosition = [0,1.5,-1];
 	this.setDefaultPosition = function(position) {
 		this._defaultPosition = position;
 	}
