@@ -293,9 +293,7 @@
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
 				}
-				var controller = controls.controllers[j];
-				var state = controls.getGamepadState(controller);
-				hands[j].position.set(state.position);
+				hands[j].position.set(controller.pose.position);
 			}
 
 			blueYellowFloor.rotation.y = Math.sin(t/15);

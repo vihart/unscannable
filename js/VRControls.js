@@ -275,33 +275,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 		return vrState;
 	};
 
-	this.getGamepadState = function(gamepad) {
-		var orientation;
-		var position;
-		var state;
-
-		orientation	= gamepad.getPose().orientation;
-		position = gamepad.getPose().position;
-
-		state = {
-			hmd : {
-				rotation : [
-					orientation[0],
-					orientation[1],
-					orientation[2],
-					orientation[3]
-				],
-				position : [
-					position[0],
-					position[1],
-					position[2]
-				]
-			}
-		};
-
-		return state;
-	}
-
 	function getFwdVector() {
 		return new THREE.Vector3(0,0,1).applyQuaternion(camera.quaternion);
 	}
