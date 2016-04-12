@@ -60,7 +60,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 				var gamepad = gamepads[i];
 
 				// only take gamepads with pose for this demo
-				if (gamepad && gamepad.pose) { // for now only take vr controllers
+				if (gamepad && gamepad.pose) {
 					if (gamepad.index in self.controllers) {
 						self.controllers[gamepad.index] = gamepad;
 					} else {
@@ -147,21 +147,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 		var newTime = Date.now();
 		this.updateTime = newTime;
 
-		/*
-		Get controller button info
-		*/
-
-		var j;
-
-		for (j in this.controllers) {
-			var controller = this.controllers[j];
-
-			this.manualMoveRate[1] = -1 * Math.round(controller.axes[0]);
-			this.manualMoveRate[0] = Math.round(controller.axes[1]);
-			this.manualRotateRate[1] = -1 * Math.round(controller.axes[3]);
-			this.manualRotateRate[0] = -1 * Math.round(controller.axes[4]);
-		}
-
 		var interval = (newTime - oldTime) * 0.001;
 		var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
 		                               this.manualRotateRate[1] * interval,
@@ -229,6 +214,11 @@ THREE.VRControls = function ( camera, speed, done ) {
 		return totalRotation;
 	};
 
+	this._defaultPosition = [0,1.5,-1]
+	this.setDefaultPosition = function(position) {
+		this._defaultPosition = position;
+	}
+
 	this.getVRState = function() {
 		var vrInput = this._vrInput;
 		var orientation;
@@ -248,7 +238,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 		} else if (this.phoneVR.rotationQuat()) {
 			orientation = this.phoneVR.rotationQuat();
 			orientation = [orientation.x, orientation.y, orientation.z, orientation.w];
-			position = [0,1.5,-1];
+			position = this._defaultPosition;
 		} else {
 			return null;
 		}

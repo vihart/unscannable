@@ -276,11 +276,8 @@
 		flock.scale.set(2,2,2);
 		scene.add(everything);
 
-		//camera position default for nonVR browsers:
-		camera.position.set(0, 1.5, -1);
-
 		var hands = {};
-
+		
 		/*
 		Request animation frame loop function
 		*/
@@ -289,11 +286,14 @@
 		var prevSelected = null;
 		function animate() {
 			for (j in controls.controllers) {
+				var handControl = controls.controllers[j]
 				if (!hands[j]) {
-					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.2), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
+					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
 				}
-				hands[j].position.set(controls.controllers[j].pose.position[0], controls.controllers[j].pose.position[1], controls.controllers[j].pose.position[2]);
+				hands[j].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
+
+
 			}
 
 			blueYellowFloor.rotation.y = Math.sin(t/15);
@@ -302,23 +302,8 @@
 			fish.rotation.y = Math.sin(t/10)*2;
 			blueBridges.rotation.y = Math.sin(t/18)*0.8;
 
-			// if (cursor.enabled) {
-   //      		cursor.updatePosition();
-
-   //      		if ( cursor.objectMouseOver !== null && prevSelected !== cursor.objectMouseOver) {
-   //      			cursor.objectMouseOver.material.color.set(0xffffff);
-   //      		}
-
-   //      		if (prevSelected !== null && prevSelected !== cursor.objectMouseOver) {
-   //      			prevSelected.material.color.set(0x636363);
-   //      		}
-
-   //      		prevSelected = cursor.objectMouseOver;
-   //      	}
-
-
-        	/*
-			Character animation
+      /*
+				Character animation
 			*/
 
 			t += .03;
