@@ -288,6 +288,13 @@
 		var tb = 1;
 		var prevSelected = null;
 		function animate() {
+			blueYellowFloor.rotation.y = Math.sin(t/15);
+			biggerPink.rotation.y = Math.sin(t/12)*0.3;
+			littlerPink.rotation.y = Math.sin(t/26);
+			fish.rotation.y = Math.sin(t/10)*2;
+			blueBridges.rotation.y = Math.sin(t/18)*0.8;
+
+			// HANDS!!!!
 			for (j in controls.controllers) {
 				var handControl = controls.controllers[j]
 				if (!hands[j]) {
@@ -296,14 +303,8 @@
 				}
 				hands[j].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
 
-
+				console.log(handControl.pose.position);
 			}
-
-			blueYellowFloor.rotation.y = Math.sin(t/15);
-			biggerPink.rotation.y = Math.sin(t/12)*0.3;
-			littlerPink.rotation.y = Math.sin(t/26);
-			fish.rotation.y = Math.sin(t/10)*2;
-			blueBridges.rotation.y = Math.sin(t/18)*0.8;
 
       /*
 				Character animation
