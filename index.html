@@ -294,20 +294,6 @@
 			fish.rotation.y = Math.sin(t/10)*2;
 			blueBridges.rotation.y = Math.sin(t/18)*0.8;
 
-			// HANDS!!!!
-			for (j in controls.controllers) {
-				var handControl = controls.controllers[j]
-				if (!hands[j]) {
-					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
-					scene.add(hands[j])
-				}
-				hands[j].position.x = handControl.pose.position[0];
-				hands[j].position.y = handControl.pose.position[1];
-				hands[j].position.z = handControl.pose.position[2];
-
-				// console.log(handControl.pose.position);
-			}
-
       /*
 				Character animation
 			*/
@@ -350,6 +336,19 @@
 			*/
 			controls.update();
 
+			// HANDS!!!!
+			for (j in controls.controllers) {
+				var handControl = controls.controllers[j]
+				if (!hands[j]) {
+					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
+					scene.add(hands[j])
+				}
+				hands[j].position.x = handControl.pose.position[0];
+				hands[j].position.y = handControl.pose.position[1];
+				hands[j].position.z = handControl.pose.position[2];
+
+				// console.log(handControl.pose.position);
+			}
 
 			/*
 			Render the scene through the VREffect.
