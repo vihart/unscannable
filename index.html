@@ -286,12 +286,9 @@
 		var t = 1;
 		var tb = 1;
 		var prevSelected = null;
-		var startTime = Date.now();
-		var animateTime = startTime;
 		function animate() {
-			var newTime = Date.now();
-			console.log("in Animate loop! " + newTime-animateTime);
-			animateTime = newTime;
+			console.timeEnd("everything");
+			console.time("animate");
 
 			blueYellowFloor.rotation.y = Math.sin(t/15);
 			biggerPink.rotation.y = Math.sin(t/12)*0.3;
@@ -343,6 +340,7 @@
 
 			// HANDS!!!!
 			for (j in controls.controllers) {
+				console.time("controls");
 				var handControl = controls.controllers[j]
 				if (!hands[j]) {
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
@@ -355,7 +353,7 @@
 				var nowTime = Date.now();
 				console.log("new hand position! " + nowTime-startTime);
 				startTime = nowTime;
-				// console.log(handControl.pose.position);
+				console.timeEnd("controls");
 			}
 
 			/*
@@ -364,7 +362,8 @@
 			// scene.simulate();
 			effect.render( scene, camera );
 			requestAnimationFrame( animate );
-
+			console.time("everything");
+			console.timeEnd("animate");
 		}
 
 		/*
