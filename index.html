@@ -350,9 +350,6 @@
 				hands[j].position.y = handControl.pose.position[1];
 				hands[j].position.z = handControl.pose.position[2];
 
-				var nowTime = Date.now();
-				console.log("new hand position! " + nowTime-startTime);
-				startTime = nowTime;
 				console.timeEnd("controls");
 			}
 
