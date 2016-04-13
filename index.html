@@ -301,9 +301,11 @@
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
 				}
-				hands[j].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
+				hands[j].position.x = handControl.pose.position[0];
+				hands[j].position.y = handControl.pose.position[1];
+				hands[j].position.z = handControl.pose.position[2];
 
-				console.log(handControl.pose.position);
+				// console.log(handControl.pose.position);
 			}
 
       /*
