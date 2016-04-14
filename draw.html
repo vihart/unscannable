@@ -204,7 +204,7 @@
 
 		for (var i = 0; i < blobNumber; i++){
 			blob[i] = new THREE.Mesh(
-				new THREE.IcosahedronGeometry(.04), 
+				new THREE.IcosahedronGeometry(.04),
 				new THREE.MeshPhongMaterial({color: 0xffff43})
 				);
 			blob[i].material.color.setHSL(i/blobNumber, 0.5, 0.5);
@@ -278,6 +278,8 @@
 				if(debug) {
 					console.time("controls");
 				}
+
+
 				var handControl = controls.controllers[j]
 				if (!hands[j]) {
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
@@ -287,9 +289,14 @@
 				hands[j].position.y = handControl.pose.position[1];
 				hands[j].position.z = handControl.pose.position[2];
 
-				//position blob
-				blob[b%blobNumber].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
-				b++;
+				for (var k = 0; k < handControl.buttons.length; ++k) {
+            if (handControl.buttons[k].pressed) {
+							//position blob
+							blob[b%blobNumber].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
+							b++;
+              break;
+            }
+          }
 
 				if(debug) {
 					console.timeEnd("controls");
