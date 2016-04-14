@@ -287,7 +287,7 @@
 				hands[j].position.z = handControl.pose.position[2];
 
 				//position blob
-				blob[b%blobNumber].position.set(handControl.pose.position);
+				blob[b%blobNumber].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
 				b++;
 
 				if(debug) {
