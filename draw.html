@@ -270,7 +270,7 @@
 
 			// HANDS!!!!
 			for (j in controls.controllers) {
-				console.time("controls");
+				// console.time("controls");
 				var handControl = controls.controllers[j]
 				// if (!hands[j]) {
 
@@ -281,8 +281,8 @@
 				hands[j][blob].position.y = handControl.pose.position[1];
 				hands[j][blob].position.z = handControl.pose.position[2];
 
-				console.timeEnd("controls");
-				console.log(handControl.pose.position);
+				// console.timeEnd("controls");
+				// console.log(handControl.pose.position);
 			}
 			blob++;
 
