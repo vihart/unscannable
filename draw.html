@@ -26,6 +26,7 @@
 	<script src="js/PhoneVR.js"></script>
 
 	<script>
+		var debug = false;
 
 		var c = 1/15; //scae factor
 		/*
@@ -222,8 +223,10 @@
 		var tb = 1;
 		var prevSelected = null;
 		function animate() {
-			// console.timeEnd("everything");
-			// console.time("animate");
+			if(debug) {
+				console.timeEnd("everything");
+				console.time("animate");
+			}
 
 			littlerPink.rotation.y = Math.sin(t/26);
 
@@ -271,7 +274,9 @@
 
 			// HANDS!!!!
 			for (j in controls.controllers) {
-				// console.time("controls");
+				if(debug) {
+					console.time("controls");
+				}
 				var handControl = controls.controllers[j]
 				if (!hands[j]) {
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
@@ -282,11 +287,13 @@
 				hands[j].position.z = handControl.pose.position[2];
 
 				//position blob
-				blob[b%blobNumber].position.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
+				blob[b%blobNumber].position.set(handControl.pose.position);
 				b++;
 
-				// console.timeEnd("controls");
-				// console.log(handControl.pose.position);
+				if(debug) {
+					console.timeEnd("controls");
+					console.log(handControl.pose.position);
+				}
 			}
 
 			/*
@@ -295,8 +302,10 @@
 			// scene.simulate();
 			effect.render( scene, camera );
 			requestAnimationFrame( animate );
-			console.time("everything");
-			console.timeEnd("animate");
+			if(debug) {
+				console.time("everything");
+				console.timeEnd("animate");
+			}
 		}
 
 		/*
