@@ -200,13 +200,14 @@
 		var b = 0; //blob counting
 
 		//create initial blobs
-		var blobNumber = 100;
+		var blobNumber = 200;
 
 		for (var i = 0; i < blobNumber; i++){
 			blob[i] = new THREE.Mesh(
 				new THREE.IcosahedronGeometry(.04), 
 				new THREE.MeshPhongMaterial({color: 0xffff43})
 				);
+			blob[i].material.color.setHSL(i/blobNumber, 0.5, 0.5);
 			glob.add(blob[i]);
 			blob[i].position.set(0,100,0);
 		};
