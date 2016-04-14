@@ -204,11 +204,14 @@
 		var hands = [];
 		var blob = 0;
 
-
-		controls.update();
-		for (j in controls.controllers) {
-			hands[j] = [];
+		for (var i = 0; i < 8; i++){
+			hands[i]=[];
 		};
+
+		// controls.update();
+		// for (j in controls.controllers) {
+		// 	hands[j] = [];
+		// };
 
 		controls.setDefaultPosition([0,1.5,-1]);
 
