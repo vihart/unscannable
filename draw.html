@@ -224,8 +224,8 @@
 
 
 		function animate() {
-			console.timeEnd("everything");
-			console.time("animate");
+			// console.timeEnd("everything");
+			// console.time("animate");
 
 			littlerPink.rotation.y = Math.sin(t/26);
 
@@ -282,7 +282,7 @@
 				hands[j][blob].position.z = handControl.pose.position[2];
 
 				// console.timeEnd("controls");
-				// console.log(handControl.pose.position);
+				console.log(handControl.pose.position);
 			}
 			blob++;
 
