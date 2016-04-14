@@ -160,87 +160,12 @@
 			scene.add( apricot );
 		}, onProgress, onError );
 
-		objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-			object.position.set(0.6, 1.5, -1.8);
-			object.scale.set(0.002,0.002,0.002);
-			fish = object;
-			scene.add( fish );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = 0;
-			object.position.y = 1;
-			object.scale.set(0.001,0.001,0.001);
-			blueBridges = object;
-			scene.add( blueBridges );
-		}, onProgress, onError );
-
 		objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
 			object.position.set(-0.8,1.5,-2);
 			object.scale.set(0.001,0.001,0.001);
 			littlerPink = object;
 			scene.add( littlerPink );
 		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-			object.position.set(-0.5,2.3,-0.5);
-			object.scale.set(2,2,2);
-			biggerPink = object;
-			scene.add( biggerPink );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
-			object.position.set(-1.2,2,-0.7);
-			object.scale.set(0.001,0.001,0.001);
-			goldfiliment = object;
-			scene.add( goldfiliment );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
-			object.position.set(0.5,1.5,-0.5);
-			object.scale.set(0.001,0.001,0.001);
-			halfopen = object;
-			scene.add( halfopen );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
-			object.position.set(-0.5,1,-1.5);
-			object.scale.set(0.001,0.001,0.001);
-			hourglassfigure = object;
-			scene.add( hourglassfigure );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
-			object.position.set(0,2.3,-2);
-			object.scale.set(0.001,0.001,0.001);
-			picklefrill = object;
-			scene.add( picklefrill );
-		}, onProgress, onError );
-
-
-		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
-			object.position.set(1,0.5,0);
-			object.scale.set(0.001,0.001,0.001);
-			tiny = object;
-			scene.add( tiny );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
-			object.position.set(-0.3,1.6,-2.2);
-			object.scale.set(0.001,0.001,0.001);
-			bigred = object;
-			scene.add( bigred );
-		}, onProgress, onError );
-		// /*
-		// Create Cursor
-		// */
-		// var cursor = new VRCursor();
-		// cursor.ready.then(function() {
-	 //    	scene.add(cursor.layout);
-	 //    	cursor.init(renderer.domElement, camera, scene, selectable);
-	 //    	cursor.enable();
-	 //    });
 
 
 		//bird
@@ -276,7 +201,12 @@
 		flock.scale.set(2,2,2);
 		scene.add(everything);
 
-		var hands = {};
+		var hands = [];
+		var blob = 0;
+
+		for (j in controls.controllers) {
+			var hands[j] = [];
+		};
 
 		controls.setDefaultPosition([0,1.5,-1]);
 
@@ -286,15 +216,13 @@
 		var t = 1;
 		var tb = 1;
 		var prevSelected = null;
+
+
 		function animate() {
 			console.timeEnd("everything");
 			console.time("animate");
 
-			blueYellowFloor.rotation.y = Math.sin(t/15);
-			biggerPink.rotation.y = Math.sin(t/12)*0.3;
 			littlerPink.rotation.y = Math.sin(t/26);
-			fish.rotation.y = Math.sin(t/10)*2;
-			blueBridges.rotation.y = Math.sin(t/18)*0.8;
 
       /*
 				Character animation
@@ -309,10 +237,6 @@
 			apricot.position.x = (Math.sin(t*.05)*-25)/5 + (Math.sin(t/5)*.2)/5 + (Math.sin(t/5)*.3);
 			apricot.position.z = (Math.cos(t*.05) * 35)/5 + (Math.cos(t/5)*.4)/5;
 
-			// apricot.lookAt(
-			// 		((Math.sin((t+1)*.05)*-25)/5 + (Math.sin((t+1)/5)*.2)/5 + (Math.sin((t+1)/5)*.3)),
-			// 		((Math.cos((t+1)*.05) * 35)/5 + (Math.cos((t+1)/5)*.4)/5)
-			// 	);
 			apricot.rotation.y = Math.sin(t/5)*0.3;
 
 
@@ -338,21 +262,25 @@
 			*/
 			controls.update();
 
+
 			// HANDS!!!!
 			for (j in controls.controllers) {
+				var hands[j] = []
 				console.time("controls");
 				var handControl = controls.controllers[j]
-				if (!hands[j]) {
-					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
+				// if (!hands[j]) {
+
+					hands[j][blob] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443,}));
 					scene.add(hands[j])
-				}
-				hands[j].position.x = handControl.pose.position[0];
-				hands[j].position.y = handControl.pose.position[1];
-				hands[j].position.z = handControl.pose.position[2];
+				// }
+				hands[j][blob].position.x = handControl.pose.position[0];
+				hands[j][blob].position.y = handControl.pose.position[1];
+				hands[j][blob].position.z = handControl.pose.position[2];
 
 				console.timeEnd("controls");
 				console.log(handControl.pose.position);
 			}
+			blob++;
 
 			/*
 			Render the scene through the VREffect.
