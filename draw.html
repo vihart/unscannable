@@ -128,16 +128,7 @@
 
 		var blueYellowFloor = new THREE.Object3D();
 		var apricot = new THREE.Object3D();
-		var fish = new THREE.Object3D();
-		var biggerPink = new THREE.Object3D();
 		var littlerPink = new THREE.Object3D();
-		var blueBridges = new THREE.Object3D();
-		var tiny = new THREE.Object3D();
-		var picklefrill = new THREE.Object3D();
-		var hourglassfigure = new THREE.Object3D();
-		var halfopen = new THREE.Object3D();
-		var goldfiliment = new THREE.Object3D();
-		var bigred = new THREE.Object3D();
 
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
@@ -166,6 +157,7 @@
 			littlerPink = object;
 			scene.add( littlerPink );
 		}, onProgress, onError );
+
 
 
 		//bird
@@ -202,16 +194,24 @@
 		scene.add(everything);
 
 		var hands = {};
-		var blob = 0;
+		var blob = []; //array of draw tetrahedra
+		var glob = new THREE.Object3D();
+		var b = 0; //blob counting
 
-		for (var i = 0; i < 8; i++){
-			hands[i]=[];
+		//create initial blobs
+		var blobNumber = 100;
+
+		for (var i = 0; i < blobNumber; i++){
+			blob[i] = new THREE.Mesh(
+				new THREE.IcosahedronGeometry(.04), 
+				new THREE.MeshPhongMaterial({color: 0xffff43})
+				);
+			glob.add(blob[i]);
+			blob[i].position.set(0,100,0);
 		};
+		scene.add(glob);
 
-		// controls.update();
-		// for (j in controls.controllers) {
-		// 	hands[j] = [];
-		// };
+
 
 		controls.setDefaultPosition([0,1.5,-1]);
 
@@ -221,8 +221,6 @@
 		var t = 1;
 		var tb = 1;
 		var prevSelected = null;
-
-
 		function animate() {
 			// console.timeEnd("everything");
 			// console.time("animate");
@@ -242,6 +240,10 @@
 			apricot.position.x = (Math.sin(t*.05)*-25)/5 + (Math.sin(t/5)*.2)/5 + (Math.sin(t/5)*.3);
 			apricot.position.z = (Math.cos(t*.05) * 35)/5 + (Math.cos(t/5)*.4)/5;
 
+			// apricot.lookAt(
+			// 		((Math.sin((t+1)*.05)*-25)/5 + (Math.sin((t+1)/5)*.2)/5 + (Math.sin((t+1)/5)*.3)),
+			// 		((Math.cos((t+1)*.05) * 35)/5 + (Math.cos((t+1)/5)*.4)/5)
+			// 	);
 			apricot.rotation.y = Math.sin(t/5)*0.3;
 
 
@@ -267,24 +269,25 @@
 			*/
 			controls.update();
 
-
 			// HANDS!!!!
 			for (j in controls.controllers) {
 				// console.time("controls");
 				var handControl = controls.controllers[j]
-				// if (!hands[j]) {
-
-					hands[j][blob] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443,}));
+				if (!hands[j]) {
+					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
-				// }
-				hands[j][blob].position.x = handControl.pose.position[0];
-				hands[j][blob].position.y = handControl.pose.position[1];
-				hands[j][blob].position.z = handControl.pose.position[2];
+				}
+				hands[j].position.x = handControl.pose.position[0];
+				hands[j].position.y = handControl.pose.position[1];
+				hands[j].position.z = handControl.pose.position[2];
+
+				//position blob
+				blob[b%blobNumber].position.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
+				b++;
 
 				// console.timeEnd("controls");
-				console.log(handControl.pose.position);
+				// console.log(handControl.pose.position);
 			}
-			blob++;
 
 			/*
 			Render the scene through the VREffect.
