@@ -75,7 +75,7 @@
 		*/
 		var skyTexture = new THREE.ImageUtils.loadTexture( "images/sky.jpg" );
 		var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
-		var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
+		var skyGeometry1 = new THREE.SphereGeometry(55*c, 30*c, 30*c);
 		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
 		scene.add( skybox );
 
@@ -85,32 +85,13 @@
 		var floorImage = new THREE.ImageUtils.loadTexture( "images/floor.jpg" );
 		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
-		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
+		var floorGeometry = new THREE.PlaneBufferGeometry( 10, 10, 1 );
 		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
 		var floor = new THREE.Mesh( floorGeometry, floorMaterial );
 		floor.rotation.x = 90 * Math.PI/180;
 		floor.position.y = 0;
-		floor.scale.set(8,8,8);
+		floor.scale.set(8*c,8*c,8*c);
 		scene.add( floor );
-
-		/*
-		Grass
-		*/
-		// var grassImage = new THREE.ImageUtils.loadTexture( "images/grass01.png" );
-		// var grassGeometry = new THREE.PlaneBufferGeometry(2.5*c,2.5*c);
-		// var grassMaterial = new THREE.MeshBasicMaterial( {map: grassImage, transparent: true, alphaTest: 0.5, color: 0x3d3d3d});
-
-
-		// var nTufts = 5000;
-		// var grass = new Array(nTufts);
-		// for(var i = 0; i < nTufts; i++){
-		// 	grass[i] = new THREE.Mesh( grassGeometry, grassMaterial );
-		// 	grass[i].position.x	= -100+Math.floor(Math.random()*(201))*c;
-		// 	grass[i].position.z	= -100+Math.floor(Math.random()*(201))*c;
-		// 	grass[i].position.y = -4.5*c;
-		// 	grass[i].rotation.y = (360+Math.floor(Math.random()*(361))) * Math.PI/180;
-		// 	scene.add(grass[i]);
-		// }
 
 		/*
 		Charaters
@@ -146,93 +127,93 @@
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = -1;
-			object.position.y = 1;
+			object.position.z = -1*c;
+			object.position.x = -1*c;
+			object.position.y = 1*c;
 			object.rotation.x = 140 * Math.PI/180;
-			object.scale.set(0.001,0.001,0.001);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			blueYellowFloor = object;
 			scene.add( blueYellowFloor );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
-			object.position.z = -2;
-			object.position.x = -1;
-			object.position.y = 1;
-			object.scale.set(0.1,0.1,0.1);
+			object.position.z = -2*c;
+			object.position.x = -1*c;
+			object.position.y = 1*c;
+			object.scale.set(0.1*c,0.1*c,0.1*c);
 			apricot = object;
 			scene.add( apricot );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-			object.position.set(0.6, 1.5, -1.8);
-			object.scale.set(0.002,0.002,0.002);
+			object.position.set(0.6*c, 1.5*c, -1.8*c);
+			object.scale.set(0.002*c,0.002*c,0.002*c);
 			fish = object;
 			scene.add( fish );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = 0;
-			object.position.y = 1;
-			object.scale.set(0.001,0.001,0.001);
+			object.position.z = -1*c;
+			object.position.x = 0*c;
+			object.position.y = 1*c;
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			blueBridges = object;
 			scene.add( blueBridges );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-			object.position.set(-0.8,1.5,-2);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(-0.8*c,1.5*c,-2*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			littlerPink = object;
 			scene.add( littlerPink );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-			object.position.set(-0.5,2.3,-0.5);
-			object.scale.set(2,2,2);
+			object.position.set(-0.5*c,2.3*c,-0.5*c);
+			object.scale.set(2*c,2*c,2*c);
 			biggerPink = object;
 			scene.add( biggerPink );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
-			object.position.set(-1.2,2,-0.7);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(-1.2*c,2*c,-0.7*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			goldfiliment = object;
 			scene.add( goldfiliment );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
-			object.position.set(0.5,1.5,-0.5);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(0.5*c,1.5*c,-0.5*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			halfopen = object;
 			scene.add( halfopen );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
-			object.position.set(-0.5,1,-1.5);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(-0.5*c,1*c,-1.5*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			hourglassfigure = object;
 			scene.add( hourglassfigure );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
-			object.position.set(0,2.3,-2);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(0*c,2.3*c,-2*c);
+			object.scale.set(0.0001*c,0.0001*c,0.0001*c);
 			picklefrill = object;
 			scene.add( picklefrill );
 		}, onProgress, onError );
 
 
 		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
-			object.position.set(1,0.5,0);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(1*c,0.5*c,0*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			tiny = object;
 			scene.add( tiny );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
-			object.position.set(-0.3,1.6,-2.2);
-			object.scale.set(0.001,0.001,0.001);
+			object.position.set(-0.3*c,1.6*c,-2.2*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
 			bigred = object;
 			scene.add( bigred );
 		}, onProgress, onError );
@@ -267,8 +248,8 @@
 		};
 		var everything = new THREE.Object3D;
 		everything.add(flock);
-		everything.scale.set(1/15, 1/15, 1/15);
-		flock.scale.set(2,2,2);
+		// everything.scale.set(1/15, 1/15, 1/15);
+		flock.scale.set(2*c,2*c,2*c);
 		scene.add(everything);
 
 		var hands = {};
@@ -282,8 +263,10 @@
 		var tb = 1;
 		var prevSelected = null;
 		function animate() {
-			console.timeEnd("everything");
-			console.time("animate");
+
+			doGrab();
+			// console.timeEnd("everything");
+			// console.time("animate");
 
 			blueYellowFloor.rotation.y = Math.sin(t/15);
 			biggerPink.rotation.y = Math.sin(t/12)*0.3;
