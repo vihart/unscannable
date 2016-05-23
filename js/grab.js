@@ -3,8 +3,6 @@ var debug = false;
 
 var hands = [];
 var colorArray = [];
-var grabbables = [];
-var grabRadius = [];
 
 // var gravity = -0.0001;
 
