@@ -316,30 +316,14 @@
 			*/
 			controls.update();
 
-			// HANDS!!!!
-			for (j in controls.controllers) {
-				console.time("controls");
-				var handControl = controls.controllers[j]
-				if (!hands[j]) {
-					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
-					scene.add(hands[j])
-				}
-				hands[j].position.x = handControl.pose.position[0];
-				hands[j].position.y = handControl.pose.position[1];
-				hands[j].position.z = handControl.pose.position[2];
-
-				console.timeEnd("controls");
-				console.log(handControl.pose.position);
-			}
-
 			/*
 			Render the scene through the VREffect.
 			*/
 			// scene.simulate();
 			effect.render( scene, camera );
 			requestAnimationFrame( animate );
-			console.time("everything");
-			console.timeEnd("animate");
+			// console.time("everything");
+			// console.timeEnd("animate");
 		}
 
 		/*
