@@ -13,7 +13,6 @@
 	<body>
 	</body>
 
-	<script src="js/grab.js"></script>
 	<script src="js/three.min.js"></script>
 	<script src="js/VRControls.js"></script>
 	<script src="js/VREffect.js"></script>
@@ -137,11 +136,6 @@
 		var halfopen = new THREE.Object3D();
 		var goldfiliment = new THREE.Object3D();
 		var bigred = new THREE.Object3D();
-
-		grabbables = [blueYellowFloor, apricot, fish, biggerPink, littlerPink, blueBridges, tiny, picklefrill, hourglassfigure, halfopen, goldfiliment, bigred];
-		for (var i = 0; i < grabbables.length; i++){
-			grabRadius[i] = 1;
-		}
 
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
