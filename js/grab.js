@@ -17,7 +17,7 @@ function doGrab(){
 		}
 
 
-		var handControl = controls.controllers[j]
+		var handControl = controls.controllers[j];
 		if (!hands[j]) {
 			//create a new hands[j] for each controller
 			hands[j] = new THREE.Mesh(new THREE.OctahedronGeometry(.05), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
@@ -40,12 +40,47 @@ function doGrab(){
 			effect.setVRMode(vrMode);
 		}
 
-		if (handControl.pose && handControl.buttons[1].pressed) { //grab stuff
+		//get vectors for things so that collision!
+		if (handControl.pose){
+			handPosVector.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
+		}
+		for (var i = 0; i < grabbables.length; i++){
+			relative[i] = new THREE.Vector3(everything.position.x + grabbables[i].position.x*everything.scale.x, everything.position.y + grabbables[i].position.y*everything.scale.y, everything.position.z + grabbables[i].position.z*everything.scale.z );
+		}
+
+		//for grabbing and moving objects during scene setup:
+		if (handControl.pose && handControl.buttons[1].pressed && editMode == true) { //grab stuff
 			for (var i = 0; i < grabbables.length; i++){
-				if (grabbables[i].position.distanceTo(handControl.position) < grabRadius[i]){
-					grabbables[i].position.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
+				if ((relative[i].distanceTo(handPosVector) < grabRadius[i])){
+					grabbables[i].position.set((handControl.pose.position[0] - everything.position.x)/everything.scale.x, (handControl.pose.position[1] - everything.position.y)/everything.scale.y, (handControl.pose.position[2] - everything.position.z)/everything.scale.z);
 					grabbables[i].quaternion.set(handControl.pose.orientation[0],handControl.pose.orientation[1],handControl.pose.orientation[2],handControl.pose.orientation[3]);
+					break;
 				}
+			}
+		}
+
+		//for playing and poking in gallery mode:
+		if (editMode == false){
+			//for poking sculptures:
+			var pokeInc = 0.002;
+			//collision for setting timer:
+			for (var i = 0; i < grabbables.length; i++){
+				if (relative[i].distanceTo(handPosVector) < grabRadius[i]){
+					handControl.vibrate(10);
+					pokeTimer[i] = pi;
+				}
+			}
+			//animation:
+			for(var i = 0; i < pokeTimer.length; i++){
+				if (pokeTimer[i] > 0){
+					grabbables[i].position.y = originalPos[i].y + Math.sin(pokeTimer[i]);
+					pokeTimer[i] -= pokeInc;
+				}
+			}
+			//for resizing on trigger pull:
+			if (handControl.pose && handControl.buttons[1].pressed) {
+				var scaleInc = 0.004;
+				everything.scale.set(everything.scale.x + scaleInc, everything.scale.y+scaleInc, everything.scale.y+scaleInc);
 			}
 		}
 

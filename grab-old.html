@@ -26,7 +26,7 @@
 
 	<script>
 
-		var c = 1/15; //scae factor
+		var c = 1; //scae factor
 		/*
 		Setup three.js WebGL renderer
 		*/
@@ -55,23 +55,19 @@
 		var effect = new THREE.VREffect( renderer );
 		effect.setSize( window.innerWidth, window.innerHeight );
 
-		var everything = new THREE.Object3D;
-
-
-		var pi = 3.1415926535897932384626433832795;
 		/*
 		Light
 		*/
 		var light = new THREE.AmbientLight( 0x404040 );
-		everything.add( light );
+		scene.add( light );
 
 		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
 		directionalLight.position.set( 0, 2, 0 );
-		everything.add( directionalLight );
+		scene.add( directionalLight );
 
 		var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
 		light2.intensity = 1;
-		everything.add( light2 );
+		scene.add( light2 );
 
 
 		/*
@@ -79,9 +75,9 @@
 		*/
 		var skyTexture = new THREE.ImageUtils.loadTexture( "images/sky.jpg" );
 		var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
-		var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
+		var skyGeometry1 = new THREE.SphereGeometry(55*c, 30*c, 30*c);
 		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
-		everything.add( skybox );
+		scene.add( skybox );
 
 		/*
 		Floor
@@ -89,26 +85,13 @@
 		var floorImage = new THREE.ImageUtils.loadTexture( "images/floor.jpg" );
 		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
-		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
+		var floorGeometry = new THREE.PlaneBufferGeometry( 10, 10, 1 );
 		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
 		var floor = new THREE.Mesh( floorGeometry, floorMaterial );
 		floor.rotation.x = 90 * Math.PI/180;
 		floor.position.y = 0;
-		floor.scale.set(8,8,8);
-		everything.add( floor );
-
-		//grab stuff setup:
-		var grabbables = [];
-		var grabRadius = [];
-		var originalPos = [];
-		var handPosVector = new THREE.Vector3(0,0,0);
-
-		var relative = [];
-
-		var editMode = true;
-
-		var pokeTimer = [];
-		//end grab stuff setup
+		floor.scale.set(8*c,8*c,8*c);
+		scene.add( floor );
 
 		/*
 		Charaters
@@ -123,132 +106,157 @@
 		var onError = function ( xhr ) {
 		};
 
-		//kept for ordering reference:
-		// var blueYellowFloor; 	//0
-		// var fish;
-		// var biggerPink;
-		// var littlerPink;
-		// var blueBridges;
-		// var tiny; 				//5
-		// var picklefrill;
-		// var hourglassfigure;
-		// var halfopen;
-		// var goldfiliment;
-		// var bigred;				//10
+		var blueYellowFloor = new THREE.Object3D();
+		var apricot = new THREE.Object3D();
+		var fish = new THREE.Object3D();
+		var biggerPink = new THREE.Object3D();
+		var littlerPink = new THREE.Object3D();
+		var blueBridges = new THREE.Object3D();
+		var tiny = new THREE.Object3D();
+		var picklefrill = new THREE.Object3D();
+		var hourglassfigure = new THREE.Object3D();
+		var halfopen = new THREE.Object3D();
+		var goldfiliment = new THREE.Object3D();
+		var bigred = new THREE.Object3D();
 
+		//grab stuff setup:
+		var grabbables = [blueYellowFloor, apricot, fish, biggerPink, littlerPink, blueBridges, tiny, picklefrill, hourglassfigure, halfopen, goldfiliment, bigred];
+		var grabRadius = [];
+		for (var i = 0; i < grabbables.length; i++){
+			grabRadius[i] = 1;
+		}
+
+		//load objs:
 		var objmtlLoader = new THREE.OBJMTLLoader();
 
 		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.set(-0.14418166399002075, 0.06810659408569336, -0.24509546279907246);
+			object.position.z = -1*c;
+			object.position.x = -1*c;
+			object.position.y = 1*c;
 			object.rotation.x = 140 * Math.PI/180;
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[0] = object;
-			grabRadius[0] = 0.4;
-			originalPos[0] = new THREE.Vector3(grabbables[0].position.x,grabbables[0].position.y,grabbables[0].position.z);
-			everything.add(grabbables[0]);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			blueYellowFloor = object;
+			scene.add( blueYellowFloor );
 		}, onProgress, onError );
 
+		objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
+			object.position.z = -2*c;
+			object.position.x = -1*c;
+			object.position.y = 1*c;
+			object.scale.set(0.1*c,0.1*c,0.1*c);
+			apricot = object;
+			scene.add( apricot );
+		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-			object.position.set(0.6, 1.5, -1.8);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[1] = object;
-			grabRadius[1] = 0.35;
-			originalPos[1] = new THREE.Vector3(grabbables[1].position.x,grabbables[1].position.y,grabbables[1].position.z);
-			everything.add(grabbables[1]);
+			object.position.set(0.6*c, 1.5*c, -1.8*c);
+			object.scale.set(0.002*c,0.002*c,0.002*c);
+			fish = object;
+			scene.add( fish );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = 0;
-			object.position.y = 1;
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[2] = object;
-			grabRadius[2] = 0.25;
-			originalPos[2] = new THREE.Vector3(grabbables[2].position.x,grabbables[2].position.y,grabbables[2].position.z);
-			everything.add(grabbables[2]);
+			object.position.z = -1*c;
+			object.position.x = 0*c;
+			object.position.y = 1*c;
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			blueBridges = object;
+			scene.add( blueBridges );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-			object.position.set(-0.8,1.5,-2);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[3] = object;
-			grabRadius[3] = 0.2;
-			originalPos[3] = new THREE.Vector3(grabbables[3].position.x,grabbables[3].position.y,grabbables[3].position.z);
-			everything.add(grabbables[3]);
+			object.position.set(-0.8*c,1.5*c,-2*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			littlerPink = object;
+			scene.add( littlerPink );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-			object.position.set(-0.5,2.3,-0.5);
-			object.scale.set(1,1,1);
-			grabbables[4] = object;
-			grabRadius[4] = 0.25;
-			originalPos[4] = new THREE.Vector3(grabbables[4].position.x,grabbables[4].position.y,grabbables[4].position.z);
-			everything.add(grabbables[4]);
+			object.position.set(-0.5*c,2.3*c,-0.5*c);
+			object.scale.set(2*c,2*c,2*c);
+			biggerPink = object;
+			scene.add( biggerPink );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
-			object.position.set(-1.2,2,-0.7);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[5] = object;
-			grabRadius[5] = 0.25;
-			originalPos[5] = new THREE.Vector3(grabbables[5].position.x,grabbables[5].position.y,grabbables[5].position.z);
-			everything.add(grabbables[5]);
+			object.position.set(-1.2*c,2*c,-0.7*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			goldfiliment = object;
+			scene.add( goldfiliment );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
-			object.position.set(0.5,1.5,-0.5);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[6] = object;
-			grabRadius[6] = 0.25;
-			originalPos[6] = new THREE.Vector3(grabbables[6].position.x,grabbables[6].position.y,grabbables[6].position.z);
-			everything.add(grabbables[6]);
+			object.position.set(0.5*c,1.5*c,-0.5*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			halfopen = object;
+			scene.add( halfopen );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
-			object.position.set(-0.5,1,-1.5);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[7] = object;
-			grabRadius[7] = 0.25;
-			originalPos[7] = new THREE.Vector3(grabbables[7].position.x,grabbables[7].position.y,grabbables[7].position.z);
-			everything.add(grabbables[7]);
+			object.position.set(-0.5*c,1*c,-1.5*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			hourglassfigure = object;
+			scene.add( hourglassfigure );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
-			object.position.set(0,2.3,-2);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[8] = object;
-			grabRadius[8] = 0.25;
-			originalPos[8] = new THREE.Vector3(grabbables[8].position.x,grabbables[8].position.y,grabbables[8].position.z);
-			everything.add(grabbables[8]);
+			object.position.set(0*c,2.3*c,-2*c);
+			object.scale.set(0.0001*c,0.0001*c,0.0001*c);
+			picklefrill = object;
+			scene.add( picklefrill );
 		}, onProgress, onError );
 
 
 		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
-			object.position.set(1,0.5,0);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[9] = object;
-			grabRadius[9] = 0.2;
-			originalPos[9] = new THREE.Vector3(grabbables[9].position.x,grabbables[9].position.y,grabbables[9].position.z);
-			everything.add(grabbables[9]);
+			object.position.set(1*c,0.5*c,0*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			tiny = object;
+			scene.add( tiny );
 		}, onProgress, onError );
 
 		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
-			object.position.set(-0.3,1.6,-2.2);
-			object.scale.set(0.001,0.001,0.001);
-			grabbables[10] = object;
-			grabRadius[10] = 0.37;
-			originalPos[10] = new THREE.Vector3(grabbables[10].position.x,grabbables[10].position.y,grabbables[10].position.z);
-			everything.add(grabbables[0]);
+			object.position.set(-0.3*c,1.6*c,-2.2*c);
+			object.scale.set(0.001*c,0.001*c,0.001*c);
+			bigred = object;
+			scene.add( bigred );
 		}, onProgress, onError );
 
 
+		//bird
+		var bird = [];
+		var birdseed = [];
+		var birdNumber = 15;
+		var flock = new THREE.Object3D();
+
+		for (var i = 0; i < birdNumber; i++){
+		  bird[i] = new THREE.Mesh(
+		      new THREE.OctahedronGeometry(1),
+		      new THREE.MeshLambertMaterial()
+		      );
+
+		  bird[i].geometry.vertices[0].set(2,0,0);
+		  bird[i].geometry.vertices[1].set(-2,0,0);
+		  bird[i].geometry.vertices[2].set(0,0.02,0.5);
+		  bird[i].geometry.vertices[3].set(0,-0.02,-0.5);
+		  bird[i].geometry.vertices[4].set(0,-0.02,0.5);
+		  bird[i].geometry.vertices[5].set(0,0.02,-0.5);
+
+		  birdseed[i] = Math.random();
+		  var birdscale = 2*Math.random()*Math.random() + .5;
+		  bird[i].scale.set(birdscale,birdscale,birdscale);
+		  var birdBrightness = 0.25 + (3*Math.random())/4;
+		  bird[i].material.color.setRGB(birdBrightness, birdBrightness, birdBrightness + Math.random()/2);
+
+		  flock.add(bird[i]);
+		};
+		var everything = new THREE.Object3D;
+		everything.add(flock);
+		// everything.scale.set(1/15, 1/15, 1/15);
+		flock.scale.set(2*c,2*c,2*c);
 		scene.add(everything);
 
-		//for non-spatially tracked mostly:
 		controls.setDefaultPosition([0,1.5,-1]);
-		//for default position in a room, Vive mostly:
-		var manualPosition = new THREE.Vector3(0.87,-0.44,3.22);
+		var manualPosition = new THREE.Vector3(0,-2,0);
 		everything.position.set(manualPosition.x, manualPosition.y, manualPosition.z);
 
 
@@ -260,26 +268,51 @@
 		Request animation frame loop function
 		*/
 		var t = 1;
-
+		var tb = 1;
+		var prevSelected = null;
 		function animate() {
 
+			doGrab();
 			// console.timeEnd("everything");
 			// console.time("animate");
-			if (grabbables.length > 9){
-				doGrab(); //in grab.js, to move items
-			}
 
-			// blueYellowFloor.rotation.y = Math.sin(t/15);
-			// biggerPink.rotation.y = Math.sin(t/12)*0.3;
-			// littlerPink.rotation.y = Math.sin(t/26);
-			// fish.rotation.y = Math.sin(t/10)*2;
-			// blueBridges.rotation.y = Math.sin(t/18)*0.8;
+			blueYellowFloor.rotation.y = Math.sin(t/15);
+			biggerPink.rotation.y = Math.sin(t/12)*0.3;
+			littlerPink.rotation.y = Math.sin(t/26);
+			fish.rotation.y = Math.sin(t/10)*2;
+			blueBridges.rotation.y = Math.sin(t/18)*0.8;
 
       /*
 				Character animation
 			*/
 
 			t += .03;
+			tb += 1; //time for birds
+			//Bounce
+			apricot.position.y = (Math.sin(t))/3 + 1;
+
+			// //Walk
+			apricot.position.x = (Math.sin(t*.05)*-25)/5 + (Math.sin(t/5)*.2)/5 + (Math.sin(t/5)*.3);
+			apricot.position.z = (Math.cos(t*.05) * 35)/5 + (Math.cos(t/5)*.4)/5;
+			apricot.rotation.y = Math.sin(t/5)*0.3;
+
+
+			  //bird flapping
+			  for (var i = 0; i < birdNumber; i++){
+			    var flappy = Math.sin(tb/(7-(2*birdseed[i])));
+			    var flappy2 = Math.sin(tb/(8-(3*birdseed[i])));
+			    bird[i].geometry.vertices[0].set(2,flappy+flappy2,0);
+			    bird[i].geometry.vertices[1].set(-2,flappy+flappy2,0);
+			    bird[i].geometry.verticesNeedUpdate = true;
+			    bird[i].lookAt(camera.position);
+			    bird[i].position.x = 57*birdseed[i] + 20 * Math.sin((tb+200*birdseed[i])/57) + 5*Math.sin(tb*birdseed[i]/51) + 8*Math.sin(tb*birdseed[i]/67) + 10*birdseed[i]*Math.sin(tb*birdseed[i]/79);
+			    bird[i].position.z = 20 * Math.cos((tb+200*birdseed[i])/57) + 7*Math.sin(tb*birdseed[i]/51) + 6*Math.sin(tb*birdseed[i]/67) + 11*birdseed[i]*Math.cos(tb*birdseed[i]/73);
+			    bird[i].position.y = 25 + 5*Math.sin((tb+333*birdseed[i])/(39 - 20000*(birdseed[i]/2432)));
+			  };
+
+			  flock.position.x = 80*Math.sin(tb/800) + 15*Math.sin(tb/300);
+			  flock.position.z = 80*Math.cos(tb/800) + 32*Math.cos(tb/467);
+			  flock.position.y = 1;
 
 			/*
 			Update VR headset position and apply to camera.
@@ -314,7 +347,6 @@
 		Listen for keyboard event and zero positional sensor on appropriate keypress.
 		*/
 		var vrMode = false;
-
 		function onkey(event) {
 	      event.preventDefault();
           if (event.keyCode == 90) { // z
@@ -342,14 +374,6 @@
 	  	  } else if (event.keyCode == 86 || event.keyCode == 13 || event.keyCode == 32 ) { // v or 'enter' or 'space' for VR mode
 		    vrMode = !vrMode;
 		    effect.setVRMode(vrMode);
-		  }else if (event.keyCode == 71 ) { // g to toggle edit mode / gallery mode
-		    editMode = !editMode;
-		  } else if (event.keyCode == 72){ // h to toggle sudden scale change
-		  	if (everything.scale.x > 1){
-		  		everything.scale.set(1,1,1)
-		  	} else {
-		  		everything.scale.set(8,8,8);
-		  	}
 		  }
 	  	};
 
@@ -368,22 +392,22 @@
 
 		window.addEventListener( 'resize', onWindowResize, false );
 
-		document.body.addEventListener( 'click', doClickStuff);
+		// document.body.addEventListener( 'click', doClickStuff);
 
-		function doClickStuff(event) {
-		  effect.setFullScreen(true);
+		// function doClickStuff(event) {
+		//   effect.setFullScreen(true);
 
-		  if (typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.lock === 'function') {
-		    window.screen.orientation.lock('landscape-primary');
-		  }
+		//   if (typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.lock === 'function') {
+		//     window.screen.orientation.lock('landscape-primary');
+		//   }
 
-		  if (typeof window.screen.webkitLockOrientation !== 'undefined' && typeof window.screen.webkitLockOrientation.lock === 'function') {
-		    window.screen.webkitLockOrientation('landscape-primary');
-		  }
+		//   if (typeof window.screen.webkitLockOrientation !== 'undefined' && typeof window.screen.webkitLockOrientation.lock === 'function') {
+		//     window.screen.webkitLockOrientation('landscape-primary');
+		//   }
 
-		  window.screen.webkitLockOrientation('landscape-primary');
-		  window.screen.lockOrientation('landscape-primary');
-		}
+		//   window.screen.webkitLockOrientation('landscape-primary');
+		//   window.screen.lockOrientation('landscape-primary');
+		// }
 
 	</script>
 </html>
