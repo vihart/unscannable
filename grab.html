@@ -293,6 +293,8 @@
 		//for default position in a room, Vive mostly:
 		var manualPosition = new THREE.Vector3(-0.76, -0.12, 0.60);
 		everything.position.set(manualPosition.x, manualPosition.y, manualPosition.z);
+		//default rotation around vertical axis, in radians
+		var manualRotation = 0;
 
 
 		var hands = {};
@@ -381,6 +383,12 @@
 		  } else if (event.keyCode == 79) { //o
 		    manualPosition.y -= 0.01; //
 		    everything.position.y -= 0.01; //
+		  } else if (event.keyCode == 69) { //e
+		    manualRotation += 0.01; //
+		    everything.rotation.y += 0.01; //
+		  } else if (event.keyCode == 81) { //q
+		    manualRotation -= 0.01; //
+		    everything.rotation.y -= 0.01; //
 	  	  } else if (event.keyCode == 86 || event.keyCode == 13 || event.keyCode == 32 ) { // v or 'enter' or 'space' for VR mode
 		    vrMode = !vrMode;
 		    effect.setVRMode(vrMode);

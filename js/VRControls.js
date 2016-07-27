@@ -28,7 +28,8 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 			control.active = (sign === 1);
 			if (control.index <= 2){
-				self.manualRotateRate[control.index] += sign * control.sign;
+				//rotation disabled
+				//self.manualRotateRate[control.index] += sign * control.sign;
 			} else if (control.index <= 5) {
 				self.manualMoveRate[control.index - 3] += sign * control.sign;
 			}
