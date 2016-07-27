@@ -62,16 +62,48 @@
 		/*
 		Light
 		*/
-		var light = new THREE.AmbientLight( 0x404040 );
-		everything.add( light );
 
-		var directionalLight = new THREE.DirectionalLight( 0x404040, 5 );
-		directionalLight.position.set( 0, 2, 0 );
-		everything.add( directionalLight );
+		var light1 = new THREE.PointLight( 0xffffff, 1, 100 );
+		light1.intensity = 1;
+		light1.position.set(1,1,0);
+		everything.add( light1 );
+
+		var light1Sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(0.15),
+			new THREE.MeshLambertMaterial()
+			);
+		
+		light1Sphere.position.set(light1.position.x, light1.position.y, light1.position.z);
+		everything.add(light1Sphere);
 
 		var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
 		light2.intensity = 1;
+		light2.position.set(0,1,0);
 		everything.add( light2 );
+
+		var light2Sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(0.15),
+			new THREE.MeshLambertMaterial()
+			);
+
+		light2Sphere.position.set(light2.position.x, light2.position.y, light2.position.z);
+		everything.add(light2Sphere);
+
+		var light3 = new THREE.PointLight( 0xffffff, 1, 100 );
+		light3.intensity = 1;
+		light3.position.set(0.5,1.5,0);
+		everything.add( light3 );
+
+		var light3Sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(0.15),
+			new THREE.MeshLambertMaterial()
+			);
+		
+		light3Sphere.position.set(light3.position.x, light3.position.y, light3.position.z);
+		everything.add(light3Sphere);
+
+		var light = [light1, light2, light3];
+		var lightSphere = [light1Sphere, light2Sphere, light3Sphere];
 
 
 		/*
@@ -108,6 +140,17 @@
 		var editMode = true;
 
 		var pokeTimer = [];
+
+		//moveable lights:
+		grabbables[11] = light1;
+		grabRadius[11] = 0.15;
+		originalPos[11] = light1.position;
+		grabbables[12] = light2;
+		grabRadius[12] = 0.15;
+		originalPos[12] = light2.position;
+		grabbables[13] = light3;
+		grabRadius[13] = 0.15;
+		originalPos[13] = light3.position;
 		//end grab stuff setup
 
 		/*
@@ -239,7 +282,7 @@
 			grabbables[10] = object;
 			grabRadius[10] = 0.37;
 			originalPos[10] = new THREE.Vector3(grabbables[10].position.x,grabbables[10].position.y,grabbables[10].position.z);
-			everything.add(grabbables[0]);
+			everything.add(grabbables[10]);
 		}, onProgress, onError );
 
 
@@ -248,7 +291,7 @@
 		//for non-spatially tracked mostly:
 		controls.setDefaultPosition([0,1.5,-1]);
 		//for default position in a room, Vive mostly:
-		var manualPosition = new THREE.Vector3(0.87,-0.44,3.22);
+		var manualPosition = new THREE.Vector3(-0.76, -0.12, 0.60);
 		everything.position.set(manualPosition.x, manualPosition.y, manualPosition.z);
 
 
@@ -265,9 +308,8 @@
 
 			// console.timeEnd("everything");
 			// console.time("animate");
-			if (grabbables.length > 9){
-				doGrab(); //in grab.js, to move items
-			}
+
+			doGrab(); //in grab.js, to move items
 
 			// blueYellowFloor.rotation.y = Math.sin(t/15);
 			// biggerPink.rotation.y = Math.sin(t/12)*0.3;
@@ -344,6 +386,9 @@
 		    effect.setVRMode(vrMode);
 		  }else if (event.keyCode == 71 ) { // g to toggle edit mode / gallery mode
 		    editMode = !editMode;
+		    for (var i = 0; i< light.length; i++){
+		    	lightSphere[i].visible = !lightSphere[i].visible;
+		    }
 		  } else if (event.keyCode == 72){ // h to toggle sudden scale change
 		  	if (everything.scale.x > 1){
 		  		everything.scale.set(1,1,1)

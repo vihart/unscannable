@@ -45,15 +45,20 @@ function doGrab(){
 			handPosVector.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
 		}
 		for (var i = 0; i < grabbables.length; i++){
-			relative[i] = new THREE.Vector3(everything.position.x + grabbables[i].position.x*everything.scale.x, everything.position.y + grabbables[i].position.y*everything.scale.y, everything.position.z + grabbables[i].position.z*everything.scale.z );
+			if (grabbables[i]){
+				relative[i] = new THREE.Vector3(everything.position.x + grabbables[i].position.x*everything.scale.x, everything.position.y + grabbables[i].position.y*everything.scale.y, everything.position.z + grabbables[i].position.z*everything.scale.z );
+			}
 		}
 
 		//for grabbing and moving objects during scene setup:
 		if (handControl.pose && handControl.buttons[1].pressed && editMode == true) { //grab stuff
-			for (var i = 0; i < grabbables.length; i++){
-				if ((relative[i].distanceTo(handPosVector) < grabRadius[i])){
+			for (var i = grabbables.length; i > -1; i--){
+				if (grabbables[i]&&(relative[i].distanceTo(handPosVector) < grabRadius[i])){
 					grabbables[i].position.set((handControl.pose.position[0] - everything.position.x)/everything.scale.x, (handControl.pose.position[1] - everything.position.y)/everything.scale.y, (handControl.pose.position[2] - everything.position.z)/everything.scale.z);
 					grabbables[i].quaternion.set(handControl.pose.orientation[0],handControl.pose.orientation[1],handControl.pose.orientation[2],handControl.pose.orientation[3]);
+					for (var i = 0; i < light.length; i++){
+						lightSphere[i].position.set(light[i].position.x, light[i].position.y, light[i].position.z); //keep our light visualizer where the light is
+					}
 					break;
 				}
 			}
@@ -65,14 +70,14 @@ function doGrab(){
 			var pokeInc = 0.002;
 			//collision for setting timer:
 			for (var i = 0; i < grabbables.length; i++){
-				if (relative[i].distanceTo(handPosVector) < grabRadius[i]){
+				if (grabbables[i]&&(relative[i].distanceTo(handPosVector) < grabRadius[i])){
 					handControl.vibrate(10);
 					pokeTimer[i] = pi;
 				}
 			}
 			//animation:
 			for(var i = 0; i < pokeTimer.length; i++){
-				if (pokeTimer[i] > 0){
+				if (grabbables[i]&&(pokeTimer[i] > 0)){
 					grabbables[i].position.y = originalPos[i].y + Math.sin(pokeTimer[i]);
 					pokeTimer[i] -= pokeInc;
 				}
