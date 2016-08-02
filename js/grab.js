@@ -7,6 +7,7 @@ var colorArray = [];
 // var gravity = -0.0001;
 
 var vrModeGamePadButtonPressed = false; // because of annoying way gamepad buttons work
+var squeezing = false;
 var pressedController = -1;
 
 function doGrab(){
@@ -50,14 +51,40 @@ function doGrab(){
 			}
 		}
 
-		//for grabbing and moving objects during scene setup:
+		//to change between edit and gallery mode:
+		if (handControl.buttons[2].pressed){
+			if (squeezing == false){
+				editMode = !editMode;
+				for (var i = 0; i< light.length; i++){
+		    		lightSphere[i].visible = !lightSphere[i].visible;
+		    	}
+				squeezing = true;
+			}
+		} else {
+			squeezing = false;
+		}
+
+		//edit mode for grabbing and moving objects during scene setup:
 		if (handControl.pose && handControl.buttons[1].pressed && editMode == true) { //grab stuff
 			for (var i = grabbables.length; i > -1; i--){
 				if (grabbables[i]&&(relative[i].distanceTo(handPosVector) < grabRadius[i])){
 					grabbables[i].position.set((handControl.pose.position[0] - everything.position.x)/everything.scale.x, (handControl.pose.position[1] - everything.position.y)/everything.scale.y, (handControl.pose.position[2] - everything.position.z)/everything.scale.z);
 					grabbables[i].quaternion.set(handControl.pose.orientation[0],handControl.pose.orientation[1],handControl.pose.orientation[2],handControl.pose.orientation[3]);
-					for (var i = 0; i < light.length; i++){
-						lightSphere[i].position.set(light[i].position.x, light[i].position.y, light[i].position.z); //keep our light visualizer where the light is
+					// grabbables[i].scale.set(handControl.axes[0], handControl.axes[1], handControl.buttons[1].value);
+					if (grabbables[i].intensity){
+						var lightNumber = i - (grabbables.length - light.length);
+						lightSphere[lightNumber].position.set(grabbables[i].position.x, grabbables[i].position.y, grabbables[i].position.z); //keep our light visualizer where the light is
+						if (handControl.buttons[0].pressed){
+							grabbables[i].intensity = handControl.axes[0] + 1;
+						} else if (handControl.buttons[0].touched){
+							grabbables[i].color.setHSL((1 + handControl.axes[0])/2, 1, (1 + handControl.axes[1])/2);
+							// grabbables[i].color.b = handControl.axes[1] + 1;
+							// grabbables[i].color.r = handControl.axes[0] + 1;
+							// lightSphere[lightNumber].scale.set(0.1 + grabbables[i].intensity, 0.1 + grabbables[i].intensity, 0.1 + grabbables[i].intensity);
+							// grabRadius[i] = 0.1 + grabbables[i].intensity/10;	
+						}
+						lightSphere[lightNumber].material.color.setRGB(grabbables[i].color.r * grabbables[i].intensity, grabbables[i].color.g * grabbables[i].intensity, grabbables[i].color.b * grabbables[i].intensity);
+
 					}
 					break;
 				}
@@ -70,9 +97,12 @@ function doGrab(){
 			var pokeInc = 0.002;
 			//collision for setting timer:
 			for (var i = 0; i < grabbables.length; i++){
-				if (grabbables[i]&&(relative[i].distanceTo(handPosVector) < grabRadius[i])){
+				if (grabbables[i]&&(relative[i].distanceTo(handPosVector) < grabRadius[i])&&(!pokeTimer[i] || pokeTimer[i] < 3)){
 					handControl.vibrate(10);
 					pokeTimer[i] = pi;
+					//for sound effects:
+					hit[currentHit].play();
+					currentHit = (currentHit + 1)%5;
 				}
 			}
 			//animation:
