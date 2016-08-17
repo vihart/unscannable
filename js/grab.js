@@ -51,18 +51,25 @@ function doGrab(){
 			}
 		}
 
-		//to change between edit and gallery mode:
-		if (handControl.buttons[2].pressed){
-			if (squeezing == false){
-				editMode = !editMode;
-				for (var i = 0; i< light.length; i++){
-		    		lightSphere[i].visible = !lightSphere[i].visible;
-		    	}
-				squeezing = true;
+		//music volume for each grabbables' voice:
+		for (var i = 0; i < (spin.length - 1); i++){
+			if (relative[i]){
+				spin[i].volume = Math.min(1, 0.7/(relative[i].distanceTo(camera.position)*relative[i].distanceTo(camera.position)*4));
 			}
-		} else {
-			squeezing = false;
 		}
+
+		//to change between edit and gallery mode:
+	// if (handControl.buttons[2].pressed){
+	// 	if (squeezing == false){
+	// 		editMode = !editMode;
+	// 		for (var i = 0; i< light.length; i++){
+	//     		lightSphere[i].visible = !lightSphere[i].visible;
+	//     	}
+	// 		squeezing = true;
+	// 	}
+	// } else {
+	// 	squeezing = false;
+	// }
 
 		//edit mode for grabbing and moving objects during scene setup:
 		if (handControl.pose && handControl.buttons[1].pressed && editMode == true) { //grab stuff

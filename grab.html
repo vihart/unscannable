@@ -16,7 +16,12 @@
 	<audio id='hit3' src="media/hitSFX/hit3.ogg" >
 	<audio id='hit4' src="media/hitSFX/hit4.ogg" >
 	<audio id='hit5' src="media/hitSFX/hit5.ogg" >
+	<audio id='spinTest' src="media/spinSFX/spinTest.ogg" >
+	<audio id='spin0' src="media/spinSFX/spin0.ogg" >
 	<audio id='spin1' src="media/spinSFX/spin1.ogg" >
+	<audio id='spin2' src="media/spinSFX/spin2.ogg" >
+	<audio id='spin3' src="media/spinSFX/spin3.ogg" >
+	<audio id='spin4' src="media/spinSFX/spin4.ogg" >
 	</body>
 
 	<script src="js/grab.js"></script>
@@ -75,10 +80,65 @@
 			document.querySelector('#hit5')
 		];
 		var spin = [
-			document.querySelector('#spin1')
+			document.querySelector('#spin0'),
+			document.querySelector('#spin1'),
+			document.querySelector('#spin2'),
+			document.querySelector('#spin3'),
+			document.querySelector('#spin4'),
+			document.querySelector('#spinTest')
 		];
 
-		var currentHit = 0;
+
+		//because of how setInterval is weird:
+		// function playSpinTest() {
+		// 	spin[spin.length-1].play();
+		// }
+		// function playSpin0() {
+		// 	spin[0].play();
+		// }
+		// function playSpin1() {
+		// 	spin[1].play();
+		// }
+		// function playSpin2() {
+		// 	spin[2].play();
+		// }
+		// function playSpin3() {
+		// 	spin[3].play();
+		// }
+		// function playSpin4() {
+		// 	spin[4].play();
+		// }
+
+		// //repeating spin audio setup:
+		// // for (var i = 0; i < spin.length; i++){ //for every spin[i] sound effect:
+		// 	spin[5].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 		spinLength[spin.length - 1] = Math.ceil(spin[spin.length - 1].duration * 1000) + 1; //get its length in milliseconds
+		// 		setInterval(playSpinTest, spinLength[spin.length - 1]); //play spin[i] every spinLength[i] millisecs
+		// 	}, false);
+		// // }
+		// spin[0].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 	spinLength[0] = Math.ceil(spin[0].duration * 1000) + 1; //get its length in milliseconds
+		// 	setInterval(playSpin0, spinLength[0]); //play spin[i] every spinLength[i] millisecs
+		// }, false);
+		// spin[1].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 	spinLength[1] = Math.ceil(spin[1].duration * 1000) + 1; //get its length in milliseconds
+		// 	setInterval(playSpin1, spinLength[1]); //play spin[i] every spinLength[i] millisecs
+		// }, false);
+		// spin[2].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 	spinLength[2] = Math.ceil(spin[2].duration * 1000) + 1; //get its length in milliseconds
+		// 	setInterval(playSpin2, spinLength[2]); //play spin[i] every spinLength[i] millisecs
+		// }, false);
+		// spin[3].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 	spinLength[3] = Math.ceil(spin[3].duration * 1000) + 1; //get its length in milliseconds
+		// 	setInterval(playSpin3, spinLength[3]); //play spin[i] every spinLength[i] millisecs
+		// }, false);
+		// spin[4].addEventListener('canplaythrough', function() { //listen for when it's loaded
+		// 	spinLength[4] = Math.ceil(spin[4].duration * 1000) + 1; //get its length in milliseconds
+		// 	setInterval(playSpin4, spinLength[4]); //play spin[i] every spinLength[i] millisecs
+		// }, false);
+
+
+		var currentHit = 0; //for looping through hit sounds
 
 		/*
 		Light
@@ -151,9 +211,9 @@
 		everything.add( floor );
 
 		//grab stuff setup:
-		var grabbables = [];
-		var grabRadius = [];
-		var originalPos = [];
+		var grabbables = []; //for objects
+		var grabRadius = []; //for collision
+		var originalPos = []; //for returning to after collision poke
 		var handPosVector = new THREE.Vector3(0,0,0);
 
 		var relative = [];
@@ -173,6 +233,8 @@
 		grabRadius[13] = 0.1;
 		originalPos[13] = light3.position;
 		//end grab stuff setup
+
+		var spinAmount = []; //for how much they spin in the air (radians) in animate loop
 
 		/*
 		Charaters
@@ -208,6 +270,7 @@
 			object.scale.set(0.001,0.001,0.001);
 			grabbables[0] = object;
 			grabRadius[0] = 0.4;
+			spinAmount[0] = 2.5;
 			originalPos[0] = new THREE.Vector3(grabbables[0].position.x,grabbables[0].position.y,grabbables[0].position.z);
 			everything.add(grabbables[0]);
 		}, onProgress, onError );
@@ -312,7 +375,7 @@
 		//for non-spatially tracked mostly:
 		controls.setDefaultPosition([0,1.5,-1]);
 		//for default position in a room, Vive mostly:
-		var manualPosition = new THREE.Vector3(0.04, -1.3, 0.47);
+		var manualPosition = new THREE.Vector3(-1.92, -1.22, 2.8);
 		everything.position.set(manualPosition.x, manualPosition.y, manualPosition.z);
 		//default rotation around vertical axis, in radians
 		var manualRotation = 0;
@@ -323,27 +386,46 @@
 
 		controls.setDefaultPosition([0,1.5,-1]);
 
+		//time (in milliseconds since 1970 started)
+		var t = Date.now();
+
+		//repeating sounds
+		//set to play every interval:
+		var spinLength = [];
+		var padding = 5; //milliseconds between plays
+		//that was too hard and can't get it to work, so:
+
+		for (var i = 0; i < (spin.length - 1); i++){
+			spin[i].play();
+			spin[i].loop = true;
+		}
+
+
+
 		/*
 		Request animation frame loop function
 		*/
-		var t = 1;
-		var spinLength = [534]; //should be milliseconds for each spin clip
 
 		function animate() {
 
-			// console.timeEnd("everything");
-			// console.time("animate");
+			t = Date.now();
 
 			doGrab(); //in grab.js, to move items
 
-
+			//spin animations, temp:
 			if(grabbables[3]){
-				grabbables[3].rotation.y = Math.sin((pi*(t/spinLength[0])) + pi/2);
+				grabbables[3].rotation.y = spinAmount[0]*Math.sin((pi*(t/spinLength[spin.length - 1])) + pi/2);
 			}
 
-			if((t%spinLength[0]) == 0){
-				spin[0].play();
-			}
+
+			//eventually:
+			// for(var i = 0; i < grabbables.length; i++){
+				// if (grabbables[i]&&spinAmount[i]&&spinLength[i]){
+				// 	grabbables[i].rotation.y = spinAmount[i]*Math.sin((pi*(t/spinLength[i])) + pi/2)
+				// }
+			// }
+			
+
 
       /*
 				Character animation
