@@ -95,9 +95,9 @@ function animate() {
 
   littlerPink.rotation.y = 3*Math.sin(t/100);
   littlerPink.position.set(
-    6 + 3*Math.cos(t/30),
+    -4 + 3*Math.cos(t/30),
     Math.cos(t/50)/2,
-    -8 + 5*Math.cos(t/200)
+    -5 + 2*Math.cos(t/47)
     );
 
   fish.position.set(
