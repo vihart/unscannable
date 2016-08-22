@@ -9,7 +9,7 @@ document.body.appendChild( renderer.domElement );
 var scene = new THREE.Scene();
 
 //Create a three.js camera
-var camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 2, 10000 );
+var camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 0.002, 10000 );
 scene.add(camera);
 
 //Apply AR headset positional data to camera.
@@ -44,7 +44,7 @@ var objmtlLoader = new THREE.OBJMTLLoader();
 //Load sculptures:
 var littlerPink = new THREE.Object3D();
 objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-  object.position.set(-0.8,1.5,-2);
+  object.position.set(-8,1.5,-2);
   object.scale.set(0.01,0.01,0.01);
   littlerPink = object;
   everything.add( littlerPink );
@@ -53,7 +53,7 @@ objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/litt
 
 var fish = new THREE.Object3D();
     objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-      object.position.set(0.6, 1.5, -1.8);
+      object.position.set(6, 15, -18);
       object.scale.set(0.02,0.02,0.02);
       fish = object;
       everything.add( fish );
@@ -61,7 +61,7 @@ var fish = new THREE.Object3D();
 
 var biggerPink = new THREE.Object3D();
     objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-      object.position.set(-0.5,2.3,-0.5);
+      object.position.set(-5,23,-05);
       object.scale.set(20,20,20);
       biggerPink = object;
       everything.add( biggerPink );
