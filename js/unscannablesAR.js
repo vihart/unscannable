@@ -44,7 +44,7 @@ var objmtlLoader = new THREE.OBJMTLLoader();
 //Load sculptures:
 var littlerPink = new THREE.Object3D();
 objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-  object.position.set(-8,1.5,-2);
+  object.position.set(-4,1.5,-2);
   object.scale.set(0.01,0.01,0.01);
   littlerPink = object;
   everything.add( littlerPink );
@@ -53,7 +53,7 @@ objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/litt
 
 var fish = new THREE.Object3D();
     objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-      object.position.set(6, 15, -18);
+      object.position.set(6, 5, -8);
       object.scale.set(0.02,0.02,0.02);
       fish = object;
       everything.add( fish );
@@ -61,7 +61,7 @@ var fish = new THREE.Object3D();
 
 var biggerPink = new THREE.Object3D();
     objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-      object.position.set(-5,23,-05);
+      object.position.set(-3,7,-2);
       object.scale.set(20,20,20);
       biggerPink = object;
       everything.add( biggerPink );
@@ -84,10 +84,25 @@ everything.add( light2 );
 //add everything to the scene:
 scene.add(everything);
 
+var t = 1;
+
 /*
 Request animation frame loop function
 */
 function animate() {
+
+  t++;
+
+  littlerPink.rotation.y = 3*Math.sin(t/100);
+
+  fish.position.set(
+    6 + Math.cos(t/500),
+    5 + Math.cos(t/80)/2,
+    -8 + Math.cos(t/200)/3
+    );
+  fish.rotation.y = Math.sin(t/50)/4;
+
+  biggerPink.rotation.y = t/100;
 
   //Update AR headset position and apply to camera.
   controls.update();
