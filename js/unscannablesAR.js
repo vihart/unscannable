@@ -68,15 +68,15 @@ var biggerPink = new THREE.Object3D();
     }, onProgress, onError );
 
 
-var apricot = new THREE.Object3D();
-    objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
-      object.position.z = 0;
-      object.position.x = -1;
-      object.position.y = -2;
-      object.scale.set(0.5,0.5,0.5);
-      apricot = object;
-      everything.add( apricot );
-    }, onProgress, onError );
+// var apricot = new THREE.Object3D();
+//     objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
+//       object.position.z = 0;
+//       object.position.x = -1;
+//       object.position.y = -2;
+//       object.scale.set(0.5,0.5,0.5);
+//       apricot = object;
+//       everything.add( apricot );
+//     }, onProgress, onError );
 
 //Lights so we can see them:
 var light = new THREE.AmbientLight( 0x404040 );
@@ -119,8 +119,8 @@ function animate() {
 
   biggerPink.rotation.y = t/100;
 
-  apricot.position.y = -2 + Math.sin(t/30)/2;
-  apricot.rotation.y = -t/200;
+  // apricot.position.y = -2 + Math.sin(t/30)/2;
+  // apricot.rotation.y = -t/200;
 
   //Update AR headset position and apply to camera.
   controls.update();
