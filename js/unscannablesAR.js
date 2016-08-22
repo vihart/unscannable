@@ -53,6 +53,8 @@ scene.add( floor );
 
 //Unscannable Objects Time:
 
+var everything = new THREE.Object3D; 
+
 //loaders:
 var onProgress = function ( xhr ) {
   if ( xhr.lengthComputable ) {
@@ -63,6 +65,9 @@ var onProgress = function ( xhr ) {
 
 var onError = function ( xhr ) {
 };
+
+
+var objmtlLoader = new THREE.OBJMTLLoader();
 
 //Load Littler Pink:
 var littlerPink = new THREE.Object3D();
