@@ -22,34 +22,6 @@ effect.setSize( window.innerWidth, window.innerHeight );
 /*
 Create, position, and add 3d objects
 */
-var pi = 3.141592653589793238;
-
-var geometry = new THREE.DodecahedronGeometry(10);
-var material = new THREE.MeshNormalMaterial();
-material.side = THREE.DoubleSide;
-var dodecahedron = new THREE.Mesh( geometry, material );
-dodecahedron.position.z = -20;
-scene.add(dodecahedron);
-
-var tetrahedron = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
-var tetrahedronIncrement = 0;
-var z = Math.sin(-3/2*pi/1000*tetrahedronIncrement)*40;
-var x = Math.cos(-3/2*pi/1000*tetrahedronIncrement)*40;
-tetrahedron.position.set(x, 0, z);
-scene.add(tetrahedron);
-
-var cubes = [];
-for (var i = 0; i < 10; i++) {
-  cubes[i] = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), new THREE.MeshBasicMaterial({color: 0x0443EE}));
-  cubes[i].position.z = i*(-20) + 100;
-  cubes[i].position.x = i*(-20);
-  scene.add(cubes[i]);
-}
-
-var floor = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1000, 1000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x404040, side: THREE.DoubleSide } ) );
-floor.rotation.x = pi/2;
-floor.position.y = -50;
-scene.add( floor );
 
 //Unscannable Objects Time:
 
@@ -69,16 +41,32 @@ var onError = function ( xhr ) {
 
 var objmtlLoader = new THREE.OBJMTLLoader();
 
-//Load Littler Pink:
+//Load sculptures:
 var littlerPink = new THREE.Object3D();
 objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
   object.position.set(-0.8,1.5,-2);
-  object.scale.set(0.001,0.001,0.001);
+  object.scale.set(0.01,0.01,0.01);
   littlerPink = object;
   everything.add( littlerPink );
 }, onProgress, onError );
 
-littlerPink.position.set(tetrahedron.position.x,tetrahedron.position.y,tetrahedron.position.z);
+
+var fish = new THREE.Object3D();
+    objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
+      object.position.set(0.6, 1.5, -1.8);
+      object.scale.set(0.02,0.02,0.02);
+      fish = object;
+      everything.add( fish );
+    }, onProgress, onError );
+
+var biggerPink = new THREE.Object3D();
+    objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
+      object.position.set(-0.5,2.3,-0.5);
+      object.scale.set(20,20,20);
+      biggerPink = object;
+      everything.add( biggerPink );
+    }, onProgress, onError );
+
 
 //Lights so we can see them:
 var light = new THREE.AmbientLight( 0x404040 );
@@ -92,22 +80,14 @@ var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
 light2.intensity = 1;
 everything.add( light2 );
 
+
+//add everything to the scene:
+scene.add(everything);
+
 /*
 Request animation frame loop function
 */
 function animate() {
-  // Apply any desired changes for the next frame. In this case, we rotate our object.
-  dodecahedron.rotation.x += 0.01;
-  dodecahedron.rotation.y += 0.005;
-
-  tetrahedron.rotation.x += 0.01;
-  tetrahedronIncrement++;
-  if (tetrahedronIncrement >= 1000) {
-    tetrahedronIncrement = 0;
-  }
-  var z = Math.sin(-2*pi/1000*tetrahedronIncrement)*40;
-  var x = Math.cos(-2*pi/1000*tetrahedronIncrement)*40;
-  tetrahedron.position.set(x, 0, z);
 
   //Update AR headset position and apply to camera.
   controls.update();
