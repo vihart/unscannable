@@ -511,6 +511,9 @@
 		  	} else {
 		  		everything.scale.set(8,8,8);
 		  	}
+		  }else if (event.keyCode == 88){//x for setting 0,0,0 pos
+		  	manualPosition.set(camera.position.x,camera.position.y,camera.position.z);
+			everything.position.set(manualPosition.x, manualPosition.y, manualPosition.z);
 		  }
 	  	};
 
