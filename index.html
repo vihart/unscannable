@@ -16,11 +16,9 @@
 	<script src="js/three.min.js"></script>
 	<script src="js/VRControls.js"></script>
 	<script src="js/VREffect.js"></script>
-	<script src="lib/gl-matrix.js"></script>
-	<script src="js/VRCursor.js"></script>
 	<script src="loaders/OBJloader.js"></script>
 	<script src="loaders/MTLLoader.js"></script>
-	<script src="loaders/OBJMTLLoader.js"></script>
+	<script src="loaders/DDSLoader.js"></script>
 	<script src="js/PhoneVR.js"></script>
 
 	<script>
@@ -48,6 +46,8 @@
 		*/
 		var controls = new THREE.VRControls( camera, undefined, 4 );
 
+		var textureLoader = new THREE.TextureLoader();
+
 		/*
 		Apply VR stereo rendering to renderer
 		*/
@@ -74,7 +74,7 @@
 		/*
 		Skybox
 		*/
-		var skyTexture = new THREE.ImageUtils.loadTexture( "images/sky.jpg" );
+		var skyTexture = textureLoader.load('images/sky.jpg');
 		var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
 		var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
 		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
@@ -83,7 +83,7 @@
 		/*
 		Floor
 		*/
-		var floorImage = new THREE.ImageUtils.loadTexture( "images/floor.jpg" );
+		var floorImage = textureLoader.load('images/floor.jpg');
 		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
 		floorImage.repeat.set( 10, 10 );
 		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
@@ -126,112 +126,220 @@
 		var onError = function ( xhr ) {
 		};
 
-		var blueYellowFloor = new THREE.Object3D();
-		var apricot = new THREE.Object3D();
-		var fish = new THREE.Object3D();
-		var biggerPink = new THREE.Object3D();
-		var littlerPink = new THREE.Object3D();
-		var blueBridges = new THREE.Object3D();
-		var tiny = new THREE.Object3D();
-		var picklefrill = new THREE.Object3D();
-		var hourglassfigure = new THREE.Object3D();
-		var halfopen = new THREE.Object3D();
-		var goldfiliment = new THREE.Object3D();
-		var bigred = new THREE.Object3D();
-
-		var objmtlLoader = new THREE.OBJMTLLoader();
-
-		objmtlLoader.load( 'objs/blueyellowfloor/blueyellowfloor.obj', 'objs/blueyellowfloor/blueyellowfloor.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = -1;
-			object.position.y = 1;
-			object.rotation.x = 140 * Math.PI/180;
-			object.scale.set(0.001,0.001,0.001);
-			blueYellowFloor = object;
-			everything.add( blueYellowFloor );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/apricot/apricot2.obj', 'objs/apricot/apricot2.mtl', function ( object ) {
-			object.position.z = -2;
-			object.position.x = -1;
-			object.position.y = 1;
-			object.scale.set(0.1,0.1,0.1);
-			apricot = object;
-			everything.add( apricot );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/fish2/fish.obj', 'objs/fish2/fish.mtl', function ( object ) {
-			object.position.set(0.6, 1.5, -1.8);
-			object.scale.set(0.002,0.002,0.002);
-			fish = object;
-			everything.add( fish );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/bluebridges/bluebridges.obj', 'objs/bluebridges/bluebridges.mtl', function ( object ) {
-			object.position.z = -1;
-			object.position.x = 0;
-			object.position.y = 1;
-			object.scale.set(0.001,0.001,0.001);
-			blueBridges = object;
-			everything.add( blueBridges );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-			object.position.set(-0.8,1.5,-2);
-			object.scale.set(0.001,0.001,0.001);
-			littlerPink = object;
-			everything.add( littlerPink );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
-			object.position.set(-0.5,2.3,-0.5);
-			object.scale.set(2,2,2);
-			biggerPink = object;
-			everything.add( biggerPink );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/goldfiliment/goldfiliment.obj', 'objs/goldfiliment/goldfiliment.mtl', function ( object ) {
-			object.position.set(-1.2,2,-0.7);
-			object.scale.set(0.001,0.001,0.001);
-			goldfiliment = object;
-			everything.add( goldfiliment );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/halfopen/model.obj', 'objs/halfopen/model.mtl', function ( object ) {
-			object.position.set(0.5,1.5,-0.5);
-			object.scale.set(0.001,0.001,0.001);
-			halfopen = object;
-			everything.add( halfopen );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/hourglassfigure/hourglassfigure.obj', 'objs/hourglassfigure/hourglassfigure.mtl', function ( object ) {
-			object.position.set(-0.5,1,-1.5);
-			object.scale.set(0.001,0.001,0.001);
-			hourglassfigure = object;
-			everything.add( hourglassfigure );
-		}, onProgress, onError );
-
-		objmtlLoader.load( 'objs/picklefrill/picklefrill.obj', 'objs/picklefrill/picklefrill.mtl', function ( object ) {
-			object.position.set(0,2.3,-2);
-			object.scale.set(0.001,0.001,0.001);
-			picklefrill = object;
-			everything.add( picklefrill );
-		}, onProgress, onError );
+        var blueYellowFloor = new THREE.Object3D();
+        var apricot = new THREE.Object3D();
+        var fish = new THREE.Object3D();
+        var biggerPink = new THREE.Object3D();
+        var littlerPink = new THREE.Object3D();
+        var blueBridges = new THREE.Object3D();
+        var tiny = new THREE.Object3D();
+        var picklefrill = new THREE.Object3D();
+        var hourglassfigure = new THREE.Object3D();
+        var halfopen = new THREE.Object3D();
+        var goldfiliment = new THREE.Object3D();
+        var bigred = new THREE.Object3D();
 
 
-		objmtlLoader.load( 'objs/tiny/tiny.obj', 'objs/tiny/tiny.mtl', function ( object ) {
-			object.position.set(1,0.5,0);
-			object.scale.set(0.001,0.001,0.001);
-			tiny = object;
-			everything.add( tiny );
-		}, onProgress, onError );
+		THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+		
+		var byfmtlLoader = new THREE.MTLLoader();
+		byfmtlLoader.setPath( 'objs/blueyellowfloor/' );
+		byfmtlLoader.load( 'blueyellowfloor.mtl', function( materials ) {
+			materials.preload();
 
-		objmtlLoader.load( 'objs/bigred/bigred.obj', 'objs/bigred/bigred.mtl', function ( object ) {
-			object.position.set(-0.3,1.6,-2.2);
-			object.scale.set(0.001,0.001,0.001);
-			bigred = object;
-			everything.add( bigred );
-		}, onProgress, onError );
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/blueyellowfloor/');
+			objLoader.load( 'blueyellowfloor.obj', function ( object ) {
+	            object.position.z = -1;
+	            object.position.x = -1;
+	            object.position.y = 1;
+				object.rotation.x = 140 * Math.PI/180;
+				object.scale.set(0.001,0.001,0.001);
+				blueYellowFloor = object;
+				everything.add(blueYellowFloor);
+			}, onProgress, onError );
+		});
+
+		var apricotmtlLoader = new THREE.MTLLoader();
+		apricotmtlLoader.setPath( 'objs/apricot/' );
+		apricotmtlLoader.load( 'apricot2.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/apricot/');
+			objLoader.load( 'apricot2.obj', function ( object ) {
+	            object.position.z = -2;
+	            object.position.x = -1;
+	            object.position.y = 1;
+	            object.scale.set(0.1,0.1,0.1);
+	            apricot = object;
+	            everything.add( apricot );
+			}, onProgress, onError );
+		});
+
+		var fishmtlLoader = new THREE.MTLLoader();
+		fishmtlLoader.setPath( 'objs/fish2/' );
+		fishmtlLoader.load( 'fish.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/fish2/');
+			objLoader.load( 'fish.obj', function ( object ) {
+				object.position.set(0.6, 1.5, -1.8);
+				object.scale.set(0.002,0.002,0.002);
+				fish = object;
+				everything.add(fish);
+			}, onProgress, onError );
+		});
+
+		var bbmtlLoader = new THREE.MTLLoader();
+		bbmtlLoader.setPath( 'objs/bluebridges/' );
+		bbmtlLoader.load( 'bluebridges.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/bluebridges/');
+			objLoader.load( 'bluebridges.obj', function ( object ) {
+				object.position.z = -1;
+				object.position.x = 0;
+				object.position.y = 1;
+				object.scale.set(0.001,0.001,0.001);
+				blueBridges = object;
+				everything.add(blueBridges);
+			}, onProgress, onError );
+		});
+
+		var lpmtlLoader = new THREE.MTLLoader();
+		lpmtlLoader.setPath( 'objs/littlerpink2/' );
+		lpmtlLoader.load( 'littlier_pink.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/littlerpink2/');
+			objLoader.load( 'littlierpink.obj', function ( object ) {
+				object.position.set(-0.8,1.5,-2);
+				object.scale.set(0.001,0.001,0.001);
+				littlerPink = object;
+				everything.add(littlerPink);
+			}, onProgress, onError );
+		});
+
+		var bpmtlLoader = new THREE.MTLLoader();
+		bpmtlLoader.setPath( 'objs/biggerpink/' );
+		bpmtlLoader.load( 'bigger_pink.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/biggerpink/');
+			objLoader.load( 'biggerpink.obj', function ( object ) {
+				object.position.set(-0.5,2.3,-0.5);
+				object.scale.set(2,2,2);
+				biggerPink = object;
+				everything.add(biggerPink);
+			}, onProgress, onError );
+		});
+
+		var gfmtlLoader = new THREE.MTLLoader();
+		gfmtlLoader.setPath( 'objs/goldfiliment/' );
+		gfmtlLoader.load( 'goldfiliment.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/goldfiliment/');
+			objLoader.load( 'goldfiliment.obj', function ( object ) {
+				object.position.set(-1.2,2,-0.7);
+				object.scale.set(0.001,0.001,0.001);
+				goldfiliment = object;
+				everything.add(goldfiliment);
+			}, onProgress, onError );
+		});
+
+		var homtlLoader = new THREE.MTLLoader();
+		homtlLoader.setPath( 'objs/halfopen/' );
+		homtlLoader.load( 'model.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/halfopen/');
+			objLoader.load( 'model.obj', function ( object ) {
+				object.position.set(0.5,1.5,-0.5);
+				object.scale.set(0.001,0.001,0.001);
+				halfopen = object;
+				everything.add(halfopen);
+			}, onProgress, onError );
+		});
+
+		var hgfmtlLoader = new THREE.MTLLoader();
+		hgfmtlLoader.setPath( 'objs/hourglassfigure/' );
+		hgfmtlLoader.load( 'hourglassfigure.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/hourglassfigure/');
+			objLoader.load( 'hourglassfigure.obj', function ( object ) {
+				object.position.set(-0.5,1,-1.5);
+				object.scale.set(0.001,0.001,0.001);
+				hourglassfigure = object;
+				everything.add(hourglassfigure);
+			}, onProgress, onError );
+		});
+
+		var pfmtlLoader = new THREE.MTLLoader();
+		pfmtlLoader.setPath( 'objs/picklefrill/' );
+		pfmtlLoader.load( 'picklefrill.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/picklefrill/');
+			objLoader.load( 'picklefrill.obj', function ( object ) {
+				object.position.set(0,2.3,-2);
+				object.scale.set(0.001,0.001,0.001);
+	            picklefrill = object;
+	            everything.add( picklefrill );
+			}, onProgress, onError );
+		});
+
+		var tinymtlLoader = new THREE.MTLLoader();
+		tinymtlLoader.setPath( 'objs/tiny/' );
+		tinymtlLoader.load( 'tiny.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/tiny/');
+			objLoader.load( 'tiny.obj', function ( object ) {
+				object.position.set(1,0.5,0);
+				object.scale.set(0.001,0.001,0.001);
+	            tiny = object;
+	            everything.add( tiny );
+			}, onProgress, onError );
+		});
+
+		var brmtlLoader = new THREE.MTLLoader();
+		brmtlLoader.setPath( 'objs/bigred/' );
+		brmtlLoader.load( 'bigred.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/bigred/');
+			objLoader.load( 'bigred.obj', function ( object ) {
+				object.position.set(-0.3,1.6,-2.2);
+				object.scale.set(0.001,0.001,0.001);
+	            bigred = object;
+	            everything.add( bigred );
+			}, onProgress, onError );
+		});
 
 
 		//bird
@@ -341,10 +449,11 @@
 					hands[j] = new THREE.Mesh(new THREE.TetrahedronGeometry(.02), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
 					scene.add(hands[j])
 				}
-				hands[j].position.x = handControl.pose.position[0];
-				hands[j].position.y = handControl.pose.position[1];
-				hands[j].position.z = handControl.pose.position[2];
-
+				if (handControl.pose.position) {
+					hands[j].position.x = handControl.pose.position[0];
+					hands[j].position.y = handControl.pose.position[1];
+					hands[j].position.z = handControl.pose.position[2];
+				}
 				// console.timeEnd("controls");
 				// console.log(handControl.pose.position);
 			}
