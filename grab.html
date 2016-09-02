@@ -302,7 +302,6 @@
 				originalPos[1] = new THREE.Vector3(grabbables[1].position.x,grabbables[1].position.y,grabbables[1].position.z);
 				everything.add(grabbables[1]);
 			}, onProgress, onError );
-
 		});
 
 		var bbmtlLoader = new THREE.MTLLoader();
@@ -323,17 +322,25 @@
 				originalPos[2] = new THREE.Vector3(grabbables[2].position.x,grabbables[2].position.y,grabbables[2].position.z);
 				everything.add(grabbables[2]);
 			}, onProgress, onError );
-
 		});
 
-		// objmtlLoader.load( 'objs/littlerpink2/littlierpink.obj', 'objs/littlerpink2/littlier_pink.mtl', function ( object ) {
-		// 	object.position.set(-0.8,1.5,-2);
-		// 	object.scale.set(0.001,0.001,0.001);
-		// 	grabbables[3] = object;
-		// 	grabRadius[3] = 0.2;
-		// 	originalPos[3] = new THREE.Vector3(grabbables[3].position.x,grabbables[3].position.y,grabbables[3].position.z);
-		// 	everything.add(grabbables[3]);
-		// }, onProgress, onError );
+		var lpmtlLoader = new THREE.MTLLoader();
+		lpmtlLoader.setPath( 'objs/littlerpink2/' );
+		lpmtlLoader.load( 'littlierpink.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/littlerpink2/');
+			objLoader.load( 'littlierpink.obj', function ( object ) {
+				object.position.set(-0.8,1.5,-2);
+				object.scale.set(0.001,0.001,0.001);
+				grabbables[3] = object;
+				grabRadius[3] = 0.2;
+				originalPos[3] = new THREE.Vector3(grabbables[3].position.x,grabbables[3].position.y,grabbables[3].position.z);
+				everything.add(grabbables[3]);
+			}, onProgress, onError );
+		});
 
 		// objmtlLoader.load( 'objs/biggerpink/biggerpink.obj', 'objs/biggerpink/bigger_pink.mtl', function ( object ) {
 		// 	object.position.set(-0.5,2.3,-0.5);
