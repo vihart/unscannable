@@ -26,8 +26,15 @@ function doGrab(){
 			colorArray[j] = new THREE.Color(1, 1/(2*(j+1)), 1/(2*j+1));
 			hands[j].material.color.setRGB(colorArray[j].r, colorArray[j].g, colorArray[j].b);
 		}
-		if(handControl.pose){ //set hand vis at controller location
+
+		if (handControl.pose && handControl.pose.position) { //set hand vis at controller location
 			hands[j].position.set(handControl.pose.position[0], handControl.pose.position[1], handControl.pose.position[2]);
+
+			//get vectors for things so that collision!
+			handPosVector.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
+		}
+
+		if (handControl.pose && handControl.pose.orientation) {
 			hands[j].quaternion.set(handControl.pose.orientation[0],handControl.pose.orientation[1],handControl.pose.orientation[2],handControl.pose.orientation[3]);
 		}
 
@@ -41,10 +48,6 @@ function doGrab(){
 			effect.setVRMode(vrMode);
 		}
 
-		//get vectors for things so that collision!
-		if (handControl.pose){
-			handPosVector.set(handControl.pose.position[0],handControl.pose.position[1],handControl.pose.position[2]);
-		}
 		for (var i = 0; i < grabbables.length; i++){
 			if (grabbables[i]){
 				relative[i] = new THREE.Vector3(everything.position.x + grabbables[i].position.x*everything.scale.x, everything.position.y + grabbables[i].position.y*everything.scale.y, everything.position.z + grabbables[i].position.z*everything.scale.z );
