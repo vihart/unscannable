@@ -54,12 +54,12 @@ function doGrab(){
 			}
 		}
 
-		//music volume for each grabbables' voice:
-		for (var i = 0; i < (spin.length - 1); i++){
-			if (relative[i]){
-				spin[i].volume = Math.min(1, 0.7/(relative[i].distanceTo(camera.position)*relative[i].distanceTo(camera.position)*4));
-			}
-		}
+		// //music volume for each grabbables' voice:
+		// for (var i = 0; i < (spin.length - 1); i++){
+		// 	if (relative[i]){
+		// 		spin[i].volume = Math.min(1, 0.7/(relative[i].distanceTo(camera.position)*relative[i].distanceTo(camera.position)*4));
+		// 	}
+		// }
 
 		//to change between edit and gallery mode:
 	// if (handControl.buttons[2].pressed){

@@ -11,7 +11,7 @@
 	</head>
 
 	<body>
-	<audio id='hit1' src="media/hitSFX/hit1.ogg" >
+<!-- 	<audio id='hit1' src="media/hitSFX/hit1.ogg" >
 	<audio id='hit2' src="media/hitSFX/hit2.ogg" >
 	<audio id='hit3' src="media/hitSFX/hit3.ogg" >
 	<audio id='hit4' src="media/hitSFX/hit4.ogg" >
@@ -21,7 +21,7 @@
 	<audio id='spin1' src="media/spinSFX/spin1.ogg" >
 	<audio id='spin2' src="media/spinSFX/spin2.ogg" >
 	<audio id='spin3' src="media/spinSFX/spin3.ogg" >
-	<audio id='spin4' src="media/spinSFX/spin4.ogg" >
+	<audio id='spin4' src="media/spinSFX/spin4.ogg" > -->
 	</body>
 
 	<script src="js/grab.js"></script>
@@ -31,39 +31,24 @@
 	<script src="loaders/OBJloader.js"></script>
 	<script src="loaders/MTLLoader.js"></script>
 	<script src="loaders/DDSLoader.js"></script>
-	<!-- deprecated file for new Three.js
-	<script src="loaders/OBJMTLLoader-deprecated.js"></script>
-	-->
 	<script src="js/PhoneVR.js"></script>
 
 	<script>
-
 		var c = 1/15; //scale factor
-		/*
-		Setup three.js WebGL renderer
-		*/
+
 		var renderer = new THREE.WebGLRenderer( { antialias: true } );
-		/*
-		Append the canvas element created by the renderer to document body element.
-		*/
 		document.body.appendChild( renderer.domElement );
-		/*
-		Create a three.js scene
-		*/
+
 		var scene = new THREE.Scene();
-		/*
-		Create a three.js camera
-		*/
 		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.001, 10000 );
 
-		/*
-		Apply VR headset positional data to camera.
-		*/
+		var audioListener = new THREE.AudioListener();
+		camera.add( audioListener );
+
+		//Apply VR headset positional data to camera.
 		var controls = new THREE.VRControls( camera, undefined, 4 );
 
-		/*
-		Apply VR stereo rendering to renderer
-		*/
+		//Apply VR stereo rendering to renderer
 		var effect = new THREE.VREffect( renderer );
 		effect.setSize( window.innerWidth, window.innerHeight );
 
@@ -72,22 +57,25 @@
 
 		var pi = 3.1415926535897932384626433832795;
 
-		var hit = [
-			document.querySelector('#hit1'),
-			document.querySelector('#hit2'),
-			document.querySelector('#hit3'),
-			document.querySelector('#hit4'),
-			document.querySelector('#hit5')
-		];
-		var spin = [
-			document.querySelector('#spin0'),
-			document.querySelector('#spin1'),
-			document.querySelector('#spin2'),
-			document.querySelector('#spin3'),
-			document.querySelector('#spin4'),
-			document.querySelector('#spinTest')
-		];
+		/* 
+		Audio Stuff 
+		*/
 
+		// var hit = [
+		// 	document.querySelector('#hit1'),
+		// 	document.querySelector('#hit2'),
+		// 	document.querySelector('#hit3'),
+		// 	document.querySelector('#hit4'),
+		// 	document.querySelector('#hit5')
+		// ];
+		// var spin = [
+		// 	document.querySelector('#spin0'),
+		// 	document.querySelector('#spin1'),
+		// 	document.querySelector('#spin2'),
+		// 	document.querySelector('#spin3'),
+		// 	document.querySelector('#spin4'),
+		// 	document.querySelector('#spinTest')
+		// ];
 
 		//because of how setInterval is weird:
 		// function playSpinTest() {
@@ -250,18 +238,21 @@
 		var onError = function ( xhr ) {
 		};
 
+		// Load models
+
 		// //kept for ordering reference:
 		// // var blueYellowFloor; 	//0
 		// // var fish;
 		// // var biggerPink;
 		// // var littlerPink;
-		// // var blueBridges;
 		// // var tiny; 				//5
 		// // var picklefrill;
 		// // var hourglassfigure;
 		// // var halfopen;
 		// // var goldfiliment;
 		// // var bigred;				//10
+
+		var audioLoader = new THREE.AudioLoader();
 
 		THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
 		
@@ -276,7 +267,7 @@
 			objLoader.load( 'blueyellowfloor.obj', function ( object ) {
 				object.position.set(-0.14418166399002075, 0.06810659408569336, -0.24509546279907246);
 				object.rotation.x = 140 * Math.PI/180;
-				object.scale.set(0.001,0.001,0.001);
+				object.scale.set(0.001,0.001,0.001);				
 				grabbables[0] = object;
 				grabRadius[0] = 0.4;
 				spinAmount[0] = 2.5;
@@ -286,6 +277,13 @@
 
 		});
 
+		var fishSound = new THREE.PositionalAudio( audioListener );
+		audioLoader.load( 'media/spinSFX/spin0.ogg', function( buffer ) {
+			fishSound.setBuffer( buffer );
+			fishSound.setRefDistance(.1);
+			fishSound.setVolume(.2);
+			fishSound.play();
+		});
 		var fishmtlLoader = new THREE.MTLLoader();
 		fishmtlLoader.setPath( 'objs/fish2/' );
 		fishmtlLoader.load( 'fish.mtl', function( materials ) {
@@ -297,6 +295,7 @@
 			objLoader.load( 'fish.obj', function ( object ) {
 				object.position.set(0.6, 1.5, -1.8);
 				object.scale.set(0.001,0.001,0.001);
+				object.add( fishSound );
 				grabbables[1] = object;
 				grabRadius[1] = 0.35;
 				originalPos[1] = new THREE.Vector3(grabbables[1].position.x,grabbables[1].position.y,grabbables[1].position.z);
@@ -488,16 +487,16 @@
 		//time (in milliseconds since 1970 started)
 		var t = Date.now();
 
-		//repeating sounds
-		//set to play every interval:
+		// //repeating sounds
+		// //set to play every interval:
 		var spinLength = [];
 		var padding = 5; //milliseconds between plays
-		//that was too hard and can't get it to work, so:
+		// //that was too hard and can't get it to work, so:
 
-		for (var i = 0; i < (spin.length - 1); i++){
-			spin[i].play();
-			spin[i].loop = true;
-		}
+		// for (var i = 0; i < (spin.length - 1); i++){
+		// 	spin[i].play();
+		// 	spin[i].loop = true;
+		// }
 
 
 		/*
@@ -511,9 +510,9 @@
 			doGrab(); //in grab.js, to move items
 
 			//spin animations, temp:
-			if(grabbables[3]){
-				grabbables[3].rotation.y = spinAmount[0]*Math.sin((pi*(t/spinLength[spin.length - 1])) + pi/2);
-			}
+			// if(grabbables[3]){
+			// 	grabbables[3].rotation.y = spinAmount[0]*Math.sin((pi*(t/spinLength[spin.length - 1])) + pi/2);
+			// }
 
 
 			//eventually:
@@ -522,10 +521,8 @@
 				// 	grabbables[i].rotation.y = spinAmount[i]*Math.sin((pi*(t/spinLength[i])) + pi/2)
 				// }
 			// }
-			
 
-
-      /*
+      		/*
 				Character animation
 			*/
 
@@ -630,7 +627,7 @@
 
 		window.addEventListener( 'resize', onWindowResize, false );
 
-		document.body.addEventListener( 'click', doClickStuff);
+		// document.body.addEventListener( 'click', doClickStuff);
 
 		function doClickStuff(event) {
 		  effect.setFullScreen(true);
