@@ -280,9 +280,10 @@
 		var fishSound = new THREE.PositionalAudio( audioListener );
 		audioLoader.load( 'media/spinSFX/spin0.ogg', function( buffer ) {
 			fishSound.setBuffer( buffer );
-			fishSound.setRefDistance(.1);
-			fishSound.setVolume(.2);
-			fishSound.play();
+			fishSound.setRefDistance(.5);
+			fishSound.setVolume(.4);
+			fishSound.setLoop(true);
+			fishSound.play(); 
 		});
 		var fishmtlLoader = new THREE.MTLLoader();
 		fishmtlLoader.setPath( 'objs/fish2/' );
@@ -303,6 +304,14 @@
 			}, onProgress, onError );
 		});
 
+		var bbSound = new THREE.PositionalAudio( audioListener );
+		audioLoader.load( 'media/spinSFX/spin1.ogg', function( buffer ) {
+			bbSound.setBuffer( buffer );
+			bbSound.setRefDistance(.5);
+			bbSound.setVolume(.4);
+			bbSound.setLoop(true);
+			bbSound.play(); 
+		});
 		var bbmtlLoader = new THREE.MTLLoader();
 		bbmtlLoader.setPath( 'objs/bluebridges/' );
 		bbmtlLoader.load( 'bluebridges.mtl', function( materials ) {
@@ -316,6 +325,7 @@
 				object.position.x = 0;
 				object.position.y = 1;
 				object.scale.set(0.001,0.001,0.001);
+				object.add(bbSound);
 				grabbables[2] = object;
 				grabRadius[2] = 0.25;
 				originalPos[2] = new THREE.Vector3(grabbables[2].position.x,grabbables[2].position.y,grabbables[2].position.z);
@@ -323,6 +333,14 @@
 			}, onProgress, onError );
 		});
 
+		var lpSound = new THREE.PositionalAudio( audioListener );
+		audioLoader.load( 'media/spinSFX/spin2.ogg', function( buffer ) {
+			lpSound.setBuffer( buffer );
+			lpSound.setRefDistance(.5);
+			lpSound.setVolume(.4);
+			lpSound.setLoop(true);
+			lpSound.play(); 
+		});
 		var lpmtlLoader = new THREE.MTLLoader();
 		lpmtlLoader.setPath( 'objs/littlerpink2/' );
 		lpmtlLoader.load( 'littlier_pink.mtl', function( materials ) {
@@ -334,6 +352,7 @@
 			objLoader.load( 'littlierpink.obj', function ( object ) {
 				object.position.set(-0.8,1.5,-2);
 				object.scale.set(0.001,0.001,0.001);
+				object.add(lpSound);
 				grabbables[3] = object;
 				grabRadius[3] = 0.2;
 				originalPos[3] = new THREE.Vector3(grabbables[3].position.x,grabbables[3].position.y,grabbables[3].position.z);
@@ -341,6 +360,14 @@
 			}, onProgress, onError );
 		});
 
+		var bpSound = new THREE.PositionalAudio( audioListener );
+		audioLoader.load( 'media/spinSFX/spin3.ogg', function( buffer ) {
+			bpSound.setBuffer( buffer );
+			bpSound.setRefDistance(.5);
+			bpSound.setVolume(.4);
+			bpSound.setLoop(true);
+			bpSound.play(); 
+		});
 		var bpmtlLoader = new THREE.MTLLoader();
 		bpmtlLoader.setPath( 'objs/biggerpink/' );
 		bpmtlLoader.load( 'bigger_pink.mtl', function( materials ) {
@@ -352,6 +379,7 @@
 			objLoader.load( 'biggerpink.obj', function ( object ) {
 				object.position.set(-0.5,2.3,-0.5);
 				object.scale.set(1,1,1);
+				object.add(bpSound);
 				grabbables[4] = object;
 				grabRadius[4] = 0.25;
 				originalPos[4] = new THREE.Vector3(grabbables[4].position.x,grabbables[4].position.y,grabbables[4].position.z);
@@ -359,6 +387,14 @@
 			}, onProgress, onError );
 		});
 
+		var gfSound = new THREE.PositionalAudio( audioListener );
+		audioLoader.load( 'media/spinSFX/spin4.ogg', function( buffer ) {
+			gfSound.setBuffer( buffer );
+			gfSound.setRefDistance(.5);
+			gfSound.setVolume(.4);
+			gfSound.setLoop(true);
+			gfSound.play(); 
+		});
 		var gfmtlLoader = new THREE.MTLLoader();
 		gfmtlLoader.setPath( 'objs/goldfiliment/' );
 		gfmtlLoader.load( 'goldfiliment.mtl', function( materials ) {
@@ -370,6 +406,7 @@
 			objLoader.load( 'goldfiliment.obj', function ( object ) {
 				object.position.set(-1.2,2,-0.7);
 				object.scale.set(0.001,0.001,0.001);
+				object.add(gfSound);
 				grabbables[5] = object;
 				grabRadius[5] = 0.25;
 				originalPos[5] = new THREE.Vector3(grabbables[5].position.x,grabbables[5].position.y,grabbables[5].position.z);
