@@ -131,7 +131,6 @@
 		/*
 		Light
 		*/
-
 		var light1 = new THREE.PointLight( 0xffffff, 1, 100 );
 		light1.intensity = 1;
 		light1.position.set(1,1,0);
@@ -175,29 +174,6 @@
 		var lightSphere = [light1Sphere, light2Sphere, light3Sphere];
 
 		var textureLoader = new THREE.TextureLoader();
-
-		/*
-		Skybox
-		*/
-		var skyTexture = textureLoader.load('images/sky.jpg');
-	    var skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.DoubleSide } );
-	    var skyGeometry1 = new THREE.SphereGeometry(55, 30, 30);
-		var skybox = new THREE.Mesh( skyGeometry1, skyMaterial );
-		everything.add( skybox );
-
-		/*
-		Floor
-		*/
-		var floorImage = textureLoader.load('images/floor.jpg');
-		floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
-		floorImage.repeat.set( 10, 10 );
-		var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
-		var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, color: 0x0475a1, side: THREE.DoubleSide} );
-		var floor = new THREE.Mesh( floorGeometry, floorMaterial );
-		floor.rotation.x = 90 * Math.PI/180;
-		floor.position.y = 0;
-		floor.scale.set(8,8,8);
-		everything.add( floor );
 
 		//grab stuff setup:
 		var grabbables = []; //for objects
@@ -255,6 +231,72 @@
 		var audioLoader = new THREE.AudioLoader();
 
 		THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+
+		var room;
+		var roommtlLoader = new THREE.MTLLoader();
+		roommtlLoader.setPath( 'objs/room/' );
+		roommtlLoader.load( 'YCR eleVR Room 14_Merged.mtl', function( materials ) {
+			materials.preload();
+
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials( materials );
+			objLoader.setPath('objs/room/');
+			objLoader.load( 'YCR eleVR Room 14_Merged.obj', function ( object ) {
+				object.scale.set(0.01,0.01,0.01);	
+				room = object;			
+				everything.add(room);
+			}, onProgress, onError );
+
+		});
+
+
+        /*
+        Floor
+        */
+        var floorImage = textureLoader.load('objs/room/Floor_006.jpg');
+        // floorImage.wrapS = floorImage.wrapT = THREE.RepeatWrapping;
+        // floorImage.repeat.set( 10, 10 );
+        var floorGeometry = new THREE.PlaneBufferGeometry( 150*c, 150*c, 10 );
+        var floorMaterial = new THREE.MeshBasicMaterial( {map: floorImage, side: THREE.DoubleSide} );
+        var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+        floor.rotation.x = 90 * Math.PI/180;
+        floor.position.y = 0;
+        // floor.scale.set(8,8,8);
+        everything.add( floor );
+
+		// var room;
+		// var roommtlLoader = new THREE.MTLLoader();
+		// roommtlLoader.setPath( 'objs/room/' );
+		// roommtlLoader.load( 'YCR eleVR Room 14 Structure.mtl', function( materials ) {
+		// 	materials.preload();
+
+		// 	var objLoader = new THREE.OBJLoader();
+		// 	objLoader.setMaterials( materials );
+		// 	objLoader.setPath('objs/room/');
+		// 	objLoader.load( 'YCR eleVR Room 14 Structure.obj', function ( object ) {
+		// 		object.scale.set(0.01,0.01,0.01);	
+		// 		room = object;			
+		// 		everything.add(room);
+		// 	}, onProgress, onError );
+
+		// });
+
+		// var floor;
+		// var floormtlLoader = new THREE.MTLLoader();
+		// floormtlLoader.setPath( 'objs/room/' );
+		// floormtlLoader.load( 'YCR eleVR Room 14 Floor.mtl', function( materials ) {
+		// 	materials.preload();
+
+		// 	var objLoader = new THREE.OBJLoader();
+		// 	objLoader.setMaterials( materials );
+		// 	objLoader.setPath('objs/room/');
+		// 	objLoader.load( 'YCR eleVR Room 14 Floor.obj', function ( object ) {
+		// 		object.scale.set(0.01,0.01,0.01);	
+		// 		floor = object;			
+		// 		everything.add(floor);
+		// 	}, onProgress, onError );
+
+		// });
 		
 		var byfmtlLoader = new THREE.MTLLoader();
 		byfmtlLoader.setPath( 'objs/blueyellowfloor/' );
