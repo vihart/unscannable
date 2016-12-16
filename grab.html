@@ -235,13 +235,13 @@
 		var room;
 		var roommtlLoader = new THREE.MTLLoader();
 		roommtlLoader.setPath( 'objs/room/' );
-		roommtlLoader.load( 'YCR eleVR Room 14_Merged.mtl', function( materials ) {
+		roommtlLoader.load( 'YCR eleVR Room 14_Merged2.mtl', function( materials ) {
 			materials.preload();
 
 			var objLoader = new THREE.OBJLoader();
 			objLoader.setMaterials( materials );
 			objLoader.setPath('objs/room/');
-			objLoader.load( 'YCR eleVR Room 14_Merged.obj', function ( object ) {
+			objLoader.load( 'YCR eleVR Room 14_Merged2.obj', function ( object ) {
 				object.scale.set(0.01,0.01,0.01);	
 				room = object;			
 				everything.add(room);
